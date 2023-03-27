@@ -16,8 +16,7 @@ jobs:
       - name: create env file
         run: |
           touch .env
-          echo SESSION_ID=${{secrets.SESSION_ID}} >> .env    
-          echo SESSION_ID=${{secrets.SESSION_ID}}
+          echo SESSION_ID=${{env.SESSION_ID}} >> .env    
+          echo SESSION_ID=${{env.SESSION_ID}}
       - run: npx yarn
       - run: npx yarn test
- 
