@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite-node ./src/index.ts",
     "format": "prettier ./src --write",
-    "prettier": "npx prettier ./src --write"
+    "prettier": "npx prettier ./src --write",
+    "test": "vite-node ./scrapper/scrap.ts"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",

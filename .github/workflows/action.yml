@@ -1,20 +1,17 @@
-name: "scrapper action"
-description: "scrap data from LGU website"
-author: "zain-ul-din"
-
+name: Data Scrapping
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    push:
+        branches:
+            - master
 
 jobs:
-  build:
-
+  check-bats-version:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
       - run: npx yarn
-      - run: npx yarn dev
-      - run: 
+      - run: npx yarn test
+ 

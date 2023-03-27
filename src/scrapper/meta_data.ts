@@ -4,16 +4,16 @@ import puppeteer, { Page } from 'puppeteer';
 
 const metaDataRoute = Router();
 
-async function scrapeMetaData ()
+export async function scrapeMetaData ()
 {
     const metaData: any = {};
 
     const URL = 'https://timetable.lgu.edu.pk/Semesters/Semester_pannel.php';
 
     const browser = await puppeteer.launch({
-        headless: false
+        headless: true
     });
-
+    
     const page = await browser.newPage();
 
     await page.setCookie({
