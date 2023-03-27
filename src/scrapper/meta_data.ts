@@ -1,15 +1,14 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response } from 'express';
 
-import puppeteer, { Page } from "puppeteer";
+import puppeteer, { Page } from 'puppeteer';
 
-const metaDataRoute = Router ();
+const metaDataRoute = Router();
 
+async function scrapeMetaData ()
+{
+    const metaData: any = {};
 
-const metaData: any = {}
-
-metaDataRoute.get ("/", async (req: Request, res: Response)=>{
-
-    const URL = 'https://timetable.lgu.edu.pk/Semesters/Semester_pannel.php'
+    const URL = 'https://timetable.lgu.edu.pk/Semesters/Semester_pannel.php';
 
     const browser = await puppeteer.launch({
         headless: false
@@ -24,58 +23,68 @@ metaDataRoute.get ("/", async (req: Request, res: Response)=>{
         path: '/',
         httpOnly: true
     });
-    
-    await page.goto (URL, { 
+
+    await page.goto(URL, {
         waitUntil: 'networkidle2'
     });
 
-    await page.waitForSelector ("#semester");
-    
-    const dropDown = await page.$ ("#semester");
+    await page.waitForSelector('#semester');
 
-    await dropDown?.select ()
+    const dropDown = await page.$('#semester');
+
+    await dropDown?.select();
 
     const semesters = await page.evaluate(async () => {
-        return Array.from(document.querySelectorAll('#semester option')).map(element=>element.innerHTML.trim());
+        return Array.from(document.querySelectorAll('#semester option')).map((element) =>
+            element.innerHTML.trim()
+        );
     });
 
-    
     // fetch semester
-    for (let i = 1; i < semesters.length; i += 1)
-    {
-        await page.select ("#semester", semesters [i]);
+    for (let i = 1; i < semesters.length; i += 1) {
+        await page.select('#semester', semesters[i]);
         await page.waitForNetworkIdle();
 
         const programs = await page.evaluate(async () => {
-            return Array.from(document.querySelectorAll('#program option')).map(element=>element.innerHTML.trim());
+            return Array.from(document.querySelectorAll('#program option')).map((element) =>
+                element.innerHTML.trim()
+            );
         });
-        
-        const programsVal = await page.evaluate (async ()=>{
-            return Array.from(document.querySelectorAll('#program option')).map (ele => (ele as HTMLSelectElement).value)
-        });
-        
-        // fetch programs
-        for (let j = 1 ; j < programs.length ; j += 1)
-        {   
-            await page.select ("#program", programsVal [j]);
-            await page.waitForNetworkIdle();
-            
-            const sections = await page.evaluate(async () => {
-                return Array
-                .from(document.querySelectorAll('#section option'))
-                .map(element=>element.innerHTML.trim());
-            });
-            
-            sections.splice (0,1);
 
-            metaData [semesters[i]] = {
-                ...metaData [semesters[i]], [programs [j]]: sections
-            }
+        const programsVal = await page.evaluate(async () => {
+            return Array.from(document.querySelectorAll('#program option')).map(
+                (ele) => (ele as HTMLSelectElement).value
+            );
+        });
+
+        // fetch programs
+        for (let j = 1; j < programs.length; j += 1) {
+            await page.select('#program', programsVal[j]);
+            await page.waitForNetworkIdle();
+
+            const sections = await page.evaluate(async () => {
+                return Array.from(document.querySelectorAll('#section option')).map((element) =>
+                    element.innerHTML.trim()
+                );
+            });
+
+            sections.splice(0, 1);
+
+            metaData[semesters[i]] = {
+                ...metaData[semesters[i]],
+                [programs[j]]: sections
+            };
         }
     }
-    
+
     browser.close();
-    res.send (metaData);
+
+    return metaData;
+}
+
+metaDataRoute.get('/', async (req: Request, res: Response) => {
+    const metaData = await scrapeMetaData();
+    res.send(metaData);
 });
 
 export default metaDataRoute;
@@ -88,3 +97,4 @@ export default metaDataRoute;
         });
     }
 */
+
