@@ -1,18 +1,23 @@
-name: Data Scrapping
-on:
-    push:
-        branches:
-            - master
-
+name: CI
+on: push
 jobs:
-  check-bats-version:
+  installDependencies:
+    name: Install Dependencies
     runs-on: ubuntu-latest
-    environment: myenvironment
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Install Dependencies
+        uses: actions/setup-node@v2
+        env:
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: "true"
         with:
-          node-version: '16'
+          args: install
+      - name: Test Code
+        uses: mujo-code/puppeteer-headful@16.6.0
+        env:
+          CI: "true"
+        with:
+          args: npm test
       - name: create env file
         run: |
           touch .env
