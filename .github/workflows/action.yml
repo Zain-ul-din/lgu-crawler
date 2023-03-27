@@ -17,7 +17,7 @@ jobs:
         env:
           CI: "true"
         with:
-          args: npm test
+          args: npx yarn 
       - name: create env file
         run: |
           touch .env
