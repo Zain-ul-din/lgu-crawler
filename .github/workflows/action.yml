@@ -12,6 +12,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
+      - name: create env file
+        run: |
+          touch .env
+          echo SESSION_ID=${{ secrets.SESSION_ID }} >> .env    
       - run: npx yarn
       - run: npx yarn test
  
