@@ -11,9 +11,9 @@ export async function scrapeMetaData ()
     const URL = 'https://timetable.lgu.edu.pk/Semesters/Semester_pannel.php';
 
     const browser = await puppeteer.launch({
-        headless: false
+        headless: true
     });
-        
+    
     const page = await browser.newPage();
 
     await page.setCookie({
