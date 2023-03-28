@@ -1,4 +1,4 @@
-name: CI
+name: Data Scraping
 on: push
 jobs:
   installDependencies:
@@ -22,7 +22,9 @@ jobs:
       - name: create env file
         run: |
           touch .env
-          echo SESSION_ID=${{ secrets.SESSION_ID }} >> .env    
+          echo SESSION_ID=${{ secrets.ENV_FILE }} >> .env 
           echo SESSION_ID=${{ secrets.SESSION_ID }}
       - run: npx yarn
       - run: npx yarn test
+      - run: npx yarn test
+

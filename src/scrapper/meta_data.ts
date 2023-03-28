@@ -11,7 +11,7 @@ export async function scrapeMetaData ()
     const URL = 'https://timetable.lgu.edu.pk/Semesters/Semester_pannel.php';
 
     const browser = await puppeteer.launch({
-        headless: true
+        headless: false
     });
 
     const page = await browser.newPage();
@@ -32,7 +32,6 @@ export async function scrapeMetaData ()
 
     const dropDown = await page.$('#semester');
 
-    console.log ("page has been loaded!!");
     await dropDown?.select();
 
     const semesters = await page.evaluate(async () => {
