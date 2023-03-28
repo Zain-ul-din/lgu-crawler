@@ -4,6 +4,7 @@ jobs:
   installDependencies:
     name: Install Dependencies
     runs-on: ubuntu-latest
+    environment: myenvironment
     steps:
       - uses: actions/checkout@v3
       - name: Install Dependencies
