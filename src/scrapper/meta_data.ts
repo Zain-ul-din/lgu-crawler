@@ -13,7 +13,7 @@ export async function scrapeMetaData ()
     const browser = await puppeteer.launch({
         headless: true
     });
-    
+
     const page = await browser.newPage();
 
     await page.setCookie({
@@ -32,6 +32,7 @@ export async function scrapeMetaData ()
 
     const dropDown = await page.$('#semester');
 
+    console.log ("page has been loaded!!");
     await dropDown?.select();
 
     const semesters = await page.evaluate(async () => {
