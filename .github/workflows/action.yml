@@ -22,16 +22,16 @@ jobs:
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          envkey_SESSION_ID={{ secrets.SESSION_ID }}
-          envkey_apiKey={{ secrets.apiKey }}
-          envkey_authDomain={{ secrets.authDomain }}
-          envkey_projectId={{ secrets.projectId }}
-          envkey_storageBucket={{ secrets.storageBucket }}
-          envkey_messagingSenderId={{ secrets.messagingSenderId }}
-          envkey_appId={{ secrets.appId }}
-          envkey_measurementId={{ secrets.measurementId }}
-      
-    
+          envkey_SESSION_ID: {{ secrets.SESSION_ID }}
+          envkey_apiKey: {{ secrets.apiKey }}
+          envkey_authDomain: {{ secrets.authDomain }}
+          envkey_projectId: {{ secrets.projectId }}
+          envkey_storageBucket: {{ secrets.storageBucket }}
+          envkey_messagingSenderId: {{ secrets.messagingSenderId }}
+          envkey_appId: {{ secrets.appId }}
+          envkey_measurementId: {{ secrets.measurementId }}
+
+
       # - name: create env file
       #   run: |
       #     touch .env
