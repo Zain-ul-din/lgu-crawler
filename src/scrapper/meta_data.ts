@@ -1,37 +1,16 @@
 import { Router, Request, Response } from 'express';
-
-import puppeteer, { Page } from 'puppeteer';
+import { getHomePage } from '../lib/home_page';
+import { Browser, Page } from 'puppeteer';
 
 const metaDataRoute = Router();
 
-export async function scrapeMetaData ()
-{
+export async function scrapeMetaData() {
     const metaData: any = {};
 
-    const URL = 'https://timetable.lgu.edu.pk/Semesters/Semester_pannel.php';
-
-    const browser = await puppeteer.launch({
-        headless: true
-    });
-
-    const page = await browser.newPage();
-
-    await page.setCookie({
-        name: 'PHPSESSID',
-        value: process.env.SESSION_ID as string,
-        domain: 'timetable.lgu.edu.pk',
-        path: '/',
-        httpOnly: true
-    });
-
-    await page.goto(URL, {
-        waitUntil: 'networkidle2'
-    });
+    const [browser, page]: [Browser, Page] = await getHomePage();
 
     await page.waitForSelector('#semester');
-
     const dropDown = await page.$('#semester');
-
     await dropDown?.select();
 
     const semesters = await page.evaluate(async () => {
@@ -88,13 +67,3 @@ metaDataRoute.get('/', async (req: Request, res: Response) => {
 });
 
 export default metaDataRoute;
-
-/*
-    Util:
-    function delay(time: number) {
-        return new Promise(function(resolve) { 
-            setTimeout(resolve, time)
-        });
-    }
-*/
-
