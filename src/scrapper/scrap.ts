@@ -42,12 +42,12 @@ console.log('key: ' + process.env.SESSION_ID);
 
                     await page.waitForNetworkIdle();
 
-                    sleep(2000);
+                    sleep(1000);
 
                     const res = await scrapTimetable(payload, page);
 
                     // write data to firebase
-                    writeTimetableData(res, payload);
+                    writeTimetableData(res, `${payload.program.replace("/", "-")}-${payload.semester}-${payload.section}`);
                     browser.close();
                 } catch (err) {
                     console.log('fail: ' + payload);
@@ -57,6 +57,8 @@ console.log('key: ' + process.env.SESSION_ID);
     }
 
     console.log('Semester Data has been fetched');
+
+    process.exit();
 })();
 
 function sleep(milliseconds: number) {
