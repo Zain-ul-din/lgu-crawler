@@ -7,8 +7,8 @@ const metaDataRoute = Router();
 export async function scrapeMetaData() {
     const metaData: any = {};
 
-    const [browser, page]: [Browser, Page] = await getHomePage();
-
+    const [browser, page]: [Browser, Page] = await getHomePage ();
+    
     await page.waitForSelector('#semester');
     const dropDown = await page.$('#semester');
     await dropDown?.select();
@@ -18,7 +18,7 @@ export async function scrapeMetaData() {
             element.innerHTML.trim()
         );
     });
-
+    
     // fetch semester
     for (let i = 1; i < semesters.length; i += 1) {
         await page.select('#semester', semesters[i]);
@@ -55,7 +55,7 @@ export async function scrapeMetaData() {
             };
         }
     }
-
+    
     browser.close();
 
     return metaData;

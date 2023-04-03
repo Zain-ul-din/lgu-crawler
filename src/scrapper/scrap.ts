@@ -47,7 +47,13 @@ console.log('key: ' + process.env.SESSION_ID);
                     const res = await scrapTimetable(payload, page);
 
                     // write data to firebase
-                    writeTimetableData(res, `${payload.program.replace("/", "-")}-${payload.semester}-${payload.section}`);
+                    writeTimetableData(res, 
+                        replaceAll (
+                            `${payload.program}-${payload.semester}-${payload.section}`,
+                            `/`,
+                            '-'
+                        )
+                    );
                     browser.close();
                 } catch (err) {
                     console.log('fail: ' + payload);
@@ -68,4 +74,12 @@ function sleep(milliseconds: number) {
             break;
         }
     }
+}
+
+function escapeRegExp(str:string) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
+function replaceAll(str: string, find: string, replace: string) {
+    return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 }
