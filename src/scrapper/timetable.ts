@@ -45,23 +45,39 @@ export async function scrapTimetable(payload: Payload, page: Page) {
     const programsVal = await page.evaluate(async (program) => {
         return Array.from(document.querySelectorAll('#program option'))
             .map((ele) =>
-                ele.innerHTML.trim() == program ? (ele as HTMLSelectElement).value : null
+                (ele as HTMLOptionElement).text.trim() == program.trim() ? (ele as HTMLOptionElement).value : null
             )
             .filter((ele) => ele != null);
     }, payload.program);
 
+    console.log (programsVal);
+    if (programsVal.length == 0) 
+    {
+        scrapTimetable (payload, page);
+        return;
+    }
+
     page.select('#program', programsVal[0] as string);
     await page.waitForNetworkIdle();
+
+
 
     // select section
     const sectionVal = await page.evaluate(async (section) => {
         return Array.from(document.querySelectorAll('#section option'))
             .map((ele) =>
-                ele.innerHTML.trim() == section.trim() ? (ele as HTMLSelectElement).value : null
+            (ele as HTMLOptionElement).text.trim() == section.trim() ? (ele as HTMLSelectElement).value : null
             )
             .filter((ele) => ele != null);
     }, payload.section);
 
+    if (sectionVal.length == 0) 
+    {
+        scrapTimetable (payload, page);
+        return;
+    }
+    
+    console.log (sectionVal);
     page.select('#section', sectionVal[0] as string);
     await page.waitForNetworkIdle();
     page.click('button[type=submit]');

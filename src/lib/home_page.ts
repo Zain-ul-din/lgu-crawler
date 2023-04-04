@@ -13,6 +13,6 @@ export async function getHomePage() {
                 httpOnly: true
             });
         },
-        launchOptions: { headless: true }
+        launchOptions: { headless: false }
     });
 }

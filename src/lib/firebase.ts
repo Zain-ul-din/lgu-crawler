@@ -34,8 +34,9 @@ export async function write_metadata(meta_data: any) {
 export async function writeTimetableData(timetable_data: any, id: string) {
     const timetable_col = collection(firebase_store, 'timetable');
 
-
-    await setDoc(doc(timetable_col, id), {
+    console.log ("id: ", id);
+    
+    await setDoc(doc(timetable_col, id.replace (/\//g, "-")), {
         timetable: timetable_data,
         updatedAt: new Date().toString()
     }, { merge: true});
