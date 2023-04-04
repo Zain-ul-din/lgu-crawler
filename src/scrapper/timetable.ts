@@ -53,15 +53,13 @@ export async function scrapTimetable(payload: Payload, page: Page) {
     console.log (programsVal);
     if (programsVal.length == 0) 
     {
-        scrapTimetable (payload, page);
-        return;
+        page.reload();
+        return await scrapTimetable (payload, page);
     }
 
     page.select('#program', programsVal[0] as string);
     await page.waitForNetworkIdle();
-
-
-
+    
     // select section
     const sectionVal = await page.evaluate(async (section) => {
         return Array.from(document.querySelectorAll('#section option'))
@@ -73,10 +71,10 @@ export async function scrapTimetable(payload: Payload, page: Page) {
 
     if (sectionVal.length == 0) 
     {
-        scrapTimetable (payload, page);
-        return;
+        page.reload();
+        return await scrapTimetable (payload, page);
     }
-    
+
     console.log (sectionVal);
     page.select('#section', sectionVal[0] as string);
     await page.waitForNetworkIdle();
