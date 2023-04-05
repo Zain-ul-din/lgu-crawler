@@ -36,7 +36,7 @@ export async function scrapTimetable(payload: Payload, page: Page) {
     await page.waitForSelector('#semester');
     const dropDown = await page.$('#semester');
     await dropDown?.select();
-
+    
     // select semester
     page.select('#semester', payload.semester);
     await page.waitForNetworkIdle();

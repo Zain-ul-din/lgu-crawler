@@ -45,11 +45,13 @@ console.log('key: ' + process.env.SESSION_ID);
                     sleep(1000);
 
                     const res = await scrapTimetable(payload, page);
+                    
 
+                    
                     // write data to firebase
                     writeTimetableData(res, 
                         replaceAll (
-                            `${payload.program}-${payload.semester}-${payload.section}`,
+                            `${payload.semester} ${payload.program} ${payload.section}`,
                             `/`,
                             '-'
                         )
