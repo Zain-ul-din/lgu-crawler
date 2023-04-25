@@ -2,37 +2,17 @@
 /// TIMETABLE SCRAPPER
 ///
 
-import { Router } from 'express';
-import usePuppeteer from '../lib/puppeteer';
 import { Page } from 'puppeteer';
-import { getHomePage } from '../lib/home_page';
 
-const timetableRouter = Router();
-
-interface Payload {
+interface Payload 
+{
     semester: string;
     program: string;
     section: string;
 }
 
-async function scrap(payload: Payload) {
-    const [browser, page] = await getHomePage();
-    const res = await scrapTimetable(payload, page);
-    browser.close();
-    return res;
-}
-
-timetableRouter.get('/timetable', async (req, res) => {
-    var timetable_data = null;
-    try {
-        timetable_data = await scrap(req.body);
-    } catch (err) {}
-    res.send(timetable_data);
-});
-
-export default timetableRouter;
-
-export async function scrapTimetable(payload: Payload, page: Page) {
+export async function scrapTimetable(payload: Payload, page: Page): Promise<any> 
+{
     await page.waitForSelector('#semester');
     const dropDown = await page.$('#semester');
     await dropDown?.select();

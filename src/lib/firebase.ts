@@ -14,6 +14,10 @@ const firebaseConfig = {
 export const firebase_app = initializeApp(firebaseConfig);
 export const firebase_store = getFirestore(firebase_app);
 
+// collections
+export const metadata_col = collection(firebase_store, 'meta_data');
+export const timetable_col = collection(firebase_store, 'timetable');
+
 import { setDoc, collection, doc } from 'firebase/firestore';
 
 /// Summary:
@@ -21,8 +25,6 @@ import { setDoc, collection, doc } from 'firebase/firestore';
 /// Params:
 ///     meta_data: any
 export async function write_metadata(meta_data: any) {
-    const metadata_col = collection(firebase_store, 'meta_data');
-
     for (let [key, val] of Object.entries(meta_data))
         await setDoc(
             doc(metadata_col, (key as string).replace('/', '-')),
@@ -31,11 +33,12 @@ export async function write_metadata(meta_data: any) {
         );
 }
 
+/// summary:
+///     write timetable data to firebase store
+/// params:
+///     id: string
+///     timetable_data: any
 export async function writeTimetableData(timetable_data: any, id: string) {
-    const timetable_col = collection(firebase_store, 'timetable');
-
-    console.log ("id: ", id);
-    
     await setDoc(doc(timetable_col, id.replace (/\//g, "-")), {
         timetable: timetable_data,
         updatedAt: new Date().toString()

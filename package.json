@@ -6,21 +6,16 @@
   "scripts": {
     "dev": "vite-node ./src/index.ts",
     "format": "prettier ./src --write",
-    "prettier": "npx prettier ./src --write",
-    "test": "vite-node ./src/scrapper/scrap.ts"
+    "prettier": "npx prettier ./src --write"
   },
   "devDependencies": {
-    "@types/express": "^4.17.17",
     "prettier": "^2.8.7",
     "typescript": "^5.0.2",
     "vite-node": "^0.29.7"
   },
   "dependencies": {
-    "@types/cors": "^2.8.13",
-    "body-parser": "^1.20.2",
-    "cors": "^2.8.5",
+    "@clack/prompts": "^0.6.3",
     "dotenv": "^16.0.3",
-    "express": "^4.18.2",
     "firebase": "^9.13.0",
     "puppeteer": "^19.8.0"
   }
