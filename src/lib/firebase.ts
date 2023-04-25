@@ -14,8 +14,6 @@ const firebaseConfig = {
 export const firebase_app = initializeApp(firebaseConfig);
 export const firebase_store = getFirestore(firebase_app);
 
-
-
 import { setDoc, collection, doc } from 'firebase/firestore';
 
 // collections

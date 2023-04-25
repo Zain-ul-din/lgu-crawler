@@ -27,7 +27,7 @@ const intro_cli = async()=>{
 
     s.start("Writing MetaData to firebase");
     await write_metadata(metaData);
-    s.start("MetaData has been added to firebase store");
+    s.stop("MetaData has been added to firebase store");
     
     
     for await (let [semester, data] of Object.entries(metaData)) {
@@ -55,10 +55,10 @@ const intro_cli = async()=>{
                     const res = await scrapTimetable(payload, page);
                     
 
-                    s.stop("Scraped Successfully | payload = " + payload);
+                    s.stop("Scraped Successfully | payload = " + JSON.stringify(payload));
                     
                     // write data to firebase
-                    s.start(`Writing Timetable Data to FireStore | Payload = ${payload}`);
+                    s.start(`Writing Timetable Data to FireStore | Payload = ${JSON.stringify(payload)}`);
                     writeTimetableData(res, 
                         replaceAll (
                             `${payload.semester} ${payload.program} ${payload.section}`,
@@ -66,7 +66,7 @@ const intro_cli = async()=>{
                             '-'
                         )
                     );
-                    s.start(`Write Operation to FireStore Succeed | DocId = '${payload.semester} ${payload.program} ${payload.section}'`);
+                    s.stop(`Write Operation to FireStore Succeed | DocId = '${payload.semester} ${payload.program} ${payload.section}'`);
                     browser.close();
                 } catch (err) {
                     s.stop(`fail with an error: ${err}`);
