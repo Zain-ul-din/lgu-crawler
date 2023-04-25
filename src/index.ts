@@ -2,10 +2,12 @@ import { intro, outro, spinner } from '@clack/prompts';
 import { delay, replaceAll, sleep } from './lib/util';
 import { scrapeMetaData } from './scrapper/meta_data';
 import dotenv from 'dotenv';
+dotenv.config();
+
 import { write_metadata, writeTimetableData } from './lib/firebase';
 import { scrapTimetable } from './scrapper/timetable';
 import { getHomePage } from './lib/home_page';
-dotenv.config();
+
 
 /// INTRO
 

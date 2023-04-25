@@ -14,11 +14,13 @@ const firebaseConfig = {
 export const firebase_app = initializeApp(firebaseConfig);
 export const firebase_store = getFirestore(firebase_app);
 
+
+
+import { setDoc, collection, doc } from 'firebase/firestore';
+
 // collections
 export const metadata_col = collection(firebase_store, 'meta_data');
 export const timetable_col = collection(firebase_store, 'timetable');
-
-import { setDoc, collection, doc } from 'firebase/firestore';
 
 /// Summary:
 ///     writes meta data to firebase store
