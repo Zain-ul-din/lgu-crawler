@@ -39,7 +39,7 @@ const intro_cli = async()=>{
                     section: section.trim()
                   };
 
-                s.start(`Scraping Timetable with Payload = ${payload}`);
+                s.start(`Scraping Timetable with Payload = ${JSON.stringify(payload)}`);
                 
                 try {
                     const [browser, page] = await getHomePage();
