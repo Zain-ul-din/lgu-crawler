@@ -4,7 +4,7 @@ import { scrapeMetaData } from './scrapper/meta_data';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { write_metadata, writeTimetableData } from './lib/firebase';
+import { write_metadata, writeTimetableData, calculateTeachersTimetable } from './lib/firebase';
 import { scrapTimetable } from './scrapper/timetable';
 import { getHomePage } from './lib/home_page';
 
@@ -74,6 +74,12 @@ const intro_cli = async()=>{
             }
         }
     }
+
+    s.start("Calculating teachers timetable");
+
+    await calculateTeachersTimetable();
+
+    s.stop("teachers timetable has been written to firestore");
 
     outro("Happy Coding ♥");
 })();
