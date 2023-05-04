@@ -15,3 +15,4 @@ export async function getHomePage() {
         launchOptions: { headless: true }
     });
 }
+

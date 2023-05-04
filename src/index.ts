@@ -8,10 +8,13 @@ import { write_metadata, writeTimetableData, calculateTeachersTimetable } from '
 import { scrapTimetable } from './scrapper/timetable';
 import { getHomePage } from './lib/home_page';
 
+import { readFileSync, existsSync, writeFileSync } from "fs";
 
 /// INTRO
 
 intro("Welcome to LGU Timetable Crawler 🤖");
+
+const CACHE_FILE_NAME = "cache.json";
 
 const s = spinner();
 
@@ -23,21 +26,37 @@ const intro_cli = async()=>{
 
 (async()=>{
     await intro_cli();
-    const metaData = await scrapeMetaData();
+    
+    var metaData = undefined;
+
+    var hasCache = existsSync(CACHE_FILE_NAME); 
+
+    if (hasCache)
+    {
+        const file_buffer = readFileSync(CACHE_FILE_NAME, "utf-8")
+        metaData = JSON.parse(file_buffer);
+    }
+    else 
+    {
+        metaData = await scrapeMetaData();
+        writeFileSync(CACHE_FILE_NAME, JSON.stringify(metaData));
+    }
 
     s.start("Writing MetaData to firebase");
     await write_metadata(metaData);
     s.stop("MetaData has been added to firebase store");
     
     
-    for await (let [semester, data] of Object.entries(metaData)) {
-        for await (let [program, sections] of Object.entries(data as any)) {
+    for await (let [semester, data] of Object.entries(metaData)) 
+    {
+        for await (let [program, sections] of Object.entries(data as any)) 
+        {
             for await (let section of sections as Array<string>) {
                 const payload = {
                     semester: semester.trim(),
                     program: program.trim(),
                     section: section.trim()
-                  };
+                };
 
                 s.start(`Scraping Timetable with Payload = ${JSON.stringify(payload)}`);
                 
@@ -73,8 +92,11 @@ const intro_cli = async()=>{
                 }
             }
         }
-    }
 
+        delete metaData[semester];
+        writeFileSync(CACHE_FILE_NAME, JSON.stringify(metaData));
+    }
+    
     s.start("Calculating teachers timetable");
 
     await calculateTeachersTimetable();
