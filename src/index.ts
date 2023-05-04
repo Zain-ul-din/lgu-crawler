@@ -8,7 +8,7 @@ import { write_metadata, writeTimetableData, calculateTeachersTimetable } from '
 import { scrapTimetable } from './scrapper/timetable';
 import { getHomePage } from './lib/home_page';
 
-import { readFileSync, existsSync, writeFileSync } from "fs";
+import { readFileSync, existsSync, writeFileSync, unlinkSync } from "fs";
 
 /// INTRO
 
@@ -39,13 +39,12 @@ const intro_cli = async()=>{
     else 
     {
         metaData = await scrapeMetaData();
+        s.start("Writing MetaData to firebase");
+        await write_metadata(metaData);
+        s.stop("MetaData has been added to firebase store");
         writeFileSync(CACHE_FILE_NAME, JSON.stringify(metaData));
     }
 
-    s.start("Writing MetaData to firebase");
-    await write_metadata(metaData);
-    s.stop("MetaData has been added to firebase store");
-    
     
     for await (let [semester, data] of Object.entries(metaData)) 
     {
@@ -91,11 +90,16 @@ const intro_cli = async()=>{
                     s.stop(`fail with an error: ${err}`);
                 }
             }
-        }
 
+            delete metaData[semester][program];
+            writeFileSync(CACHE_FILE_NAME, JSON.stringify(metaData));
+        }
+        
         delete metaData[semester];
         writeFileSync(CACHE_FILE_NAME, JSON.stringify(metaData));
     }
+
+    unlinkSync (CACHE_FILE_NAME);
     
     s.start("Calculating teachers timetable");
 
