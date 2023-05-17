@@ -1,4 +1,3 @@
-import { Browser } from 'puppeteer';
 import usePuppeteer from './puppeteer';
 
 export async function getHomePage() {
@@ -16,3 +15,4 @@ export async function getHomePage() {
         launchOptions: { headless: true }
     });
 }
+
