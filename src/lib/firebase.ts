@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getDocs, getFirestore } from 'firebase/firestore';
 
+
 const firebaseConfig = {
     apiKey: process.env.apiKey,
     authDomain: process.env.authDomain,
@@ -16,6 +17,7 @@ export const firebase_store = getFirestore(firebase_app);
 
 import { setDoc, collection, doc } from 'firebase/firestore';
 import { TimetableData, TimetableDocType, TimetableResponseType } from '../types/TimetableTypes';
+import { replaceAll } from './util';
 
 // collections
 export const metadata_col = collection(firebase_store, 'meta_data');
@@ -81,7 +83,7 @@ export async function calculateTeachersTimetable() {
     const teachers = [...new Set(filterQuery)];
 
     for (let teacher of teachers) {
-        const newDoc = doc(teachers_timetable_col, teacher);
+        const newDoc = doc(teachers_timetable_col, replaceAll(teacher, "/", "-"));
 
         const timetable: TimetableDocType = {
             updatedAt: '',
@@ -95,7 +97,7 @@ export async function calculateTeachersTimetable() {
                 Wednesday: []
             }
         };
-
+        
         const data = timetable_docs.docs.map((doc) => ({
             id: doc.id,
             ...doc.data()
