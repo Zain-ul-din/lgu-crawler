@@ -2,17 +2,17 @@ interface TimetableLectureTime {
     hours: number;
     minutes: number;
 }
- 
+
 export interface TimetableData {
     subject: string;
     roomNo: string;
     teacher: string;
     startTime: TimetableLectureTime;
     endTime: TimetableLectureTime;
-    class?: string | undefined
- }
- 
- export interface TimetableResponseType {
+    class?: string | undefined;
+}
+
+export interface TimetableResponseType {
     Monday?: Array<TimetableData>;
     Tuesday?: Array<TimetableData>;
     Wednesday?: Array<TimetableData>;
@@ -20,10 +20,9 @@ export interface TimetableData {
     Friday?: Array<TimetableData>;
     Saturday?: Array<TimetableData>;
     Sunday?: Array<TimetableData>;
- }
- 
- export interface TimetableDocType {
+}
+
+export interface TimetableDocType {
     timetable: TimetableResponseType;
     updatedAt: string;
- }
- 
+}

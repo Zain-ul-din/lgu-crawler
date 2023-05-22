@@ -1,9 +1,6 @@
-export async function delay(time: number) 
-{
-    await (new Promise(resolve => setTimeout(resolve, time * 1000)));
+export async function delay(time: number) {
+    await new Promise((resolve) => setTimeout(resolve, time * 1000));
 }
-
-
 
 export function sleep(milliseconds: number) {
     var start = new Date().getTime();
@@ -14,7 +11,7 @@ export function sleep(milliseconds: number) {
     }
 }
 
-export function escapeRegExp(str:string) {
+export function escapeRegExp(str: string) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
