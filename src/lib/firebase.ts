@@ -116,8 +116,8 @@ export async function calculateTeachersTimetable() {
                 }
             );
         });
-
-        timetable.updatedAt = data[0].updatedAt;
+        
+        timetable.updatedAt = (new Date()).toString();
 
         await setDoc(newDoc, timetable, { merge: true });
     }

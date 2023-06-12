@@ -13,6 +13,7 @@ import { readFileSync, existsSync, writeFileSync, unlinkSync } from 'fs';
 const CACHE_FILE_NAME = 'cache.json';
 const s = spinner();
 
+
 enum CLI_OPTIONS {
     past_papers = 'past_papers',
     teachers_timetable = 'teachers_timetable',
