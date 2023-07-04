@@ -4,7 +4,7 @@ import { scrapeMetaData } from './scrapper/meta_data';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { write_metadata, writeTimetableData, calculateTeachersTimetable, calculatePastTimetableInputOptions } from './lib/firebase';
+import { write_metadata, writeTimetableData, calculateTeachersTimetable, calculatePastTimetableInputOptions, calculateRoomsTimeTable } from './lib/firebase';
 import { scrapTimetable } from './scrapper/timetable';
 import { getHomePage } from './lib/home_page';
 
@@ -13,10 +13,10 @@ import { readFileSync, existsSync, writeFileSync, unlinkSync } from 'fs';
 const CACHE_FILE_NAME = 'cache.json';
 const s = spinner();
 
-
 enum CLI_OPTIONS {
     past_papers = 'past_papers',
     teachers_timetable = 'teachers_timetable',
+    rooms_timetable = 'rooms_timetable',
     crawler = 'crawler'
 }
 
@@ -25,6 +25,7 @@ const option = await select({
     options: [
         { value: CLI_OPTIONS.past_papers, label: 'update past papers metadata' },
         { value: CLI_OPTIONS.teachers_timetable, label: 'update teachers timetable metadata' },
+        { value: CLI_OPTIONS.rooms_timetable, label: 'update rooms timetable' },
         { value: CLI_OPTIONS.crawler, label: 'run full crawler', hint: 'oh no! Make sure you have super computer' }
     ]
 });
@@ -33,6 +34,12 @@ const update_teachers_timetable = async ()=> {
     s.start('Calculating teachers timetable');
     await calculateTeachersTimetable();
     s.stop('teachers timetable has been written to firestore');
+};
+
+const update_rooms_timetable = async ()=> {
+    s.start('Calculating rooms timetable');
+    await calculateRoomsTimeTable();
+    s.stop('rooms timetable has been written to firestore');
 };
 
 const update_past_paper_input = async ()=> {
@@ -49,10 +56,13 @@ else if ((option as CLI_OPTIONS) == CLI_OPTIONS.teachers_timetable)
 {
     await update_teachers_timetable();
 }
+else if(option as CLI_OPTIONS == CLI_OPTIONS.rooms_timetable)
+{
+    await update_rooms_timetable();
+}
 
 if ((option as CLI_OPTIONS) != CLI_OPTIONS.crawler)
     process.exit(0)
-
 
 /// INTRO
 
@@ -140,6 +150,7 @@ unlinkSync(CACHE_FILE_NAME);
 
 await update_teachers_timetable()
 await update_past_paper_input();
+await update_rooms_timetable();
 
 outro('Happy Coding ♥');
 

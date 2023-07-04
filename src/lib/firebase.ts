@@ -24,6 +24,7 @@ export const metadata_col = collection(firebase_store, 'meta_data');
 export const timetable_col = collection(firebase_store, 'timetable');
 export const teachers_timetable_col = collection(firebase_store, 'teachers_timetable');
 export const past_papers_input_col = collection(firebase_store, "past_papers_input");
+export const rooms_timetable_col = collection(firebase_store, "rooms_timetable");
 
 /// Summary:
 ///     writes meta data to firebase store
@@ -82,6 +83,11 @@ export async function calculateTeachersTimetable() {
     /**@ts-ignore */
     const teachers = [...new Set(filterQuery)];
 
+    const data = timetable_docs.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+    })) as Array<TimetableDoc>;
+
     for (let teacher of teachers) {
         const newDoc = doc(teachers_timetable_col, replaceAll(teacher, "/", "-"));
 
@@ -97,11 +103,6 @@ export async function calculateTeachersTimetable() {
                 Wednesday: []
             }
         };
-        
-        const data = timetable_docs.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data()
-        })) as Array<TimetableDoc>;
 
         data.forEach((d) => {
             Object.entries(d.timetable).forEach(
@@ -119,6 +120,69 @@ export async function calculateTeachersTimetable() {
         
         timetable.updatedAt = (new Date()).toString();
 
+        await setDoc(newDoc, timetable, { merge: true });
+    }
+}
+
+/// summary:
+///     calculates rooms timetable and write it to firestore
+export async function calculateRoomsTimeTable() 
+{
+    const timetable_docs = await getDocs(timetable_col);
+
+    const res: Array<TimetableDocType> = timetable_docs.docs.map((doc) =>
+        doc.data()
+    ) as Array<TimetableDocType>;
+
+    
+    const filterQuery = res
+    .map((timetableData) =>
+        Object.entries(timetableData.timetable)
+            .map(([_, val]: [string, Array<TimetableData>]) => val.map((data) => data.roomNo))
+            .reduce((acc, curr) => acc.concat(curr), [])
+    )
+    .reduce((acc, curr) => acc.concat(curr), []);
+
+    const rooms = [...new Set(filterQuery)];
+
+    const data = timetable_docs.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+    })) as Array<TimetableDoc>;
+
+    for (let room of rooms) 
+    {
+        const newDoc = doc(rooms_timetable_col, replaceAll(room, "/", "-"));
+
+        const timetable: TimetableDocType = {
+            updatedAt: '',
+            timetable: {
+                Monday: [],
+                Friday: [],
+                Thursday: [],
+                Saturday: [],
+                Sunday: [],
+                Tuesday: [],
+                Wednesday: []
+            }
+        };
+
+        data.forEach((d) => {
+            Object.entries(d.timetable).forEach(
+                ([day, lectures]: [string, Array<TimetableData>]) => {
+                    lectures.forEach((lecture) => {
+                        if (lecture.roomNo == room)
+                            timetable.timetable[day as keyof TimetableResponseType]?.push({
+                                class: d.id,
+                                room: room,
+                                ...lecture
+                            });
+                    });
+                }
+            );
+        });
+
+        timetable.updatedAt = (new Date()).toString();
         await setDoc(newDoc, timetable, { merge: true });
     }
 }
