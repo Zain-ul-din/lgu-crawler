@@ -4,19 +4,17 @@
 
 import { Page } from 'puppeteer';
 
-interface Payload 
-{
+interface Payload {
     semester: string;
     program: string;
     section: string;
 }
 
-export async function scrapTimetable(payload: Payload, page: Page): Promise<any> 
-{
+export async function scrapTimetable(payload: Payload, page: Page): Promise<any> {
     await page.waitForSelector('#semester');
     const dropDown = await page.$('#semester');
     await dropDown?.select();
-    
+
     // select semester
     page.select('#semester', payload.semester);
     await page.waitForNetworkIdle();
@@ -25,37 +23,37 @@ export async function scrapTimetable(payload: Payload, page: Page): Promise<any>
     const programsVal = await page.evaluate(async (program) => {
         return Array.from(document.querySelectorAll('#program option'))
             .map((ele) =>
-                (ele as HTMLOptionElement).text.trim() == program.trim() ? (ele as HTMLOptionElement).value : null
+                (ele as HTMLOptionElement).text.trim() == program.trim()
+                    ? (ele as HTMLOptionElement).value
+                    : null
             )
             .filter((ele) => ele != null);
     }, payload.program);
-
-    console.log (programsVal);
-    if (programsVal.length == 0) 
-    {
+    
+    if (programsVal.length == 0) {
         page.reload();
-        return await scrapTimetable (payload, page);
+        return await scrapTimetable(payload, page);
     }
 
     page.select('#program', programsVal[0] as string);
     await page.waitForNetworkIdle();
-    
+
     // select section
     const sectionVal = await page.evaluate(async (section) => {
         return Array.from(document.querySelectorAll('#section option'))
             .map((ele) =>
-            (ele as HTMLOptionElement).text.trim() == section.trim() ? (ele as HTMLSelectElement).value : null
+                (ele as HTMLOptionElement).text.trim() == section.trim()
+                    ? (ele as HTMLSelectElement).value
+                    : null
             )
             .filter((ele) => ele != null);
     }, payload.section);
 
-    if (sectionVal.length == 0) 
-    {
+    if (sectionVal.length == 0) {
         page.reload();
-        return await scrapTimetable (payload, page);
+        return await scrapTimetable(payload, page);
     }
 
-    console.log (sectionVal);
     page.select('#section', sectionVal[0] as string);
     await page.waitForNetworkIdle();
     page.click('button[type=submit]');
@@ -76,8 +74,7 @@ export async function scrapTimetable(payload: Payload, page: Page): Promise<any>
                     .map((ele) => {
                         const tdData = ele.split('\n');
                         const time = tdData[4].split('-');
-
-                        console.log(tdData);
+                        
                         return {
                             subject: tdData[0],
                             roomNo: tdData[1],

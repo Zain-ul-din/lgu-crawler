@@ -1,9 +1,6 @@
-export async function delay(time: number) 
-{
-    await (new Promise(resolve => setTimeout(resolve, time * 1000)));
+export async function delay(time: number) {
+    await new Promise((resolve) => setTimeout(resolve, time * 1000));
 }
-
-
 
 export function sleep(milliseconds: number) {
     var start = new Date().getTime();
@@ -14,10 +11,31 @@ export function sleep(milliseconds: number) {
     }
 }
 
-export function escapeRegExp(str:string) {
+export function escapeRegExp(str: string) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
 export function replaceAll(str: string, find: string, replace: string) {
     return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
+
+/**
+ * Returns true if string seems invalid
+ * @param str 
+ * @returns boolean  
+ * @Example
+ * ```diff
+ * - 'Select Program' is invalid
+ * - 'Program1 not BSSE Summer-2023 SE-Calculusavailable' is invalid
+ * + 'BS Mass Comm' is valid
+ * ```
+ */
+export function shouldExcludeStr(str: string | undefined) {
+
+    const potentialInvalidFlags = [
+        'not', 'select', 'available'
+    ]
+
+    return typeof str !== 'string' || str.length == 0 ||
+        potentialInvalidFlags.filter(flag => str.toLocaleLowerCase().includes(flag)).length > 0
 }

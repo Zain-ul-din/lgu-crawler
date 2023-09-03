@@ -3,6 +3,7 @@ import usePuppeteer from './puppeteer';
 export async function getHomePage() {
     const URL = 'https://timetable.lgu.edu.pk/Semesters/Semester_pannel.php';
     return await usePuppeteer(URL, {
+        
         async initPage(page) {
             await page.setCookie({
                 name: 'PHPSESSID',
@@ -12,7 +13,7 @@ export async function getHomePage() {
                 httpOnly: true
             });
         },
-        launchOptions: { headless: true }
+        launchOptions: { headless: process.env.HEAD_LESS === 'true' }
     });
 }
 

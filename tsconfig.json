@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "target": "es2017",
+    "module": "es2022",
     "esModuleInterop": true,
     "sourceMap": true,
     "outDir": "dist",
@@ -19,8 +19,9 @@
     "noUnusedParameters": true,
     "lib": ["es6", "dom"],
     "types": ["node"],
-    "allowJs": false
+    "allowJs": false,
   },
+  "experiments": { "topLevelAwait": true },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.test.ts"]
 }
