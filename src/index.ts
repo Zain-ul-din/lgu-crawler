@@ -1,8 +1,9 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { intro, outro, spinner, select } from '@clack/prompts';
 import { delay, replaceAll, sleep } from './lib/util';
 import { scrapeMetaData } from './scrapper/meta_data';
-import dotenv from 'dotenv';
-dotenv.config();
 
 import { write_metadata, writeTimetableData, calculateTeachersTimetable, calculatePastTimetableInputOptions, calculateRoomsTimeTable } from './lib/firebase';
 import { scrapTimetable } from './scrapper/timetable';

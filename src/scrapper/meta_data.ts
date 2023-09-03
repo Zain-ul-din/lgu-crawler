@@ -4,87 +4,102 @@
 
 import { getHomePage } from '../lib/home_page';
 import { Browser, Page } from 'puppeteer';
-
-import { spinner } from '@clack/prompts';
+import { shouldExcludeStr } from "../lib/util"; 
+import { toPrettierStr } from '../lib/prettier';
 
 export async function scrapeMetaData() {
     const metaData: any = {};
 
-    const s = spinner();
-
-    s.start('Crawling Page');
-
     const [browser, page]: [Browser, Page] = await getHomePage();
+
+    ///
+    /// Fetch Semesters
+    ///
+
     await page.waitForSelector('#semester');
+    await page.waitForSelector("#semester option");
+
     const dropDown = await page.$('#semester');
     await dropDown?.select();
 
-    s.stop('Page has been reached');
-
-    s.start('Scraping Semesters Data');
-
-    const semesters = await page.evaluate(async () => {
+    const semesters = (await page.evaluate(async () => {
         return Array.from(document.querySelectorAll('#semester option')).map((element) =>
             element.innerHTML.trim()
         );
-    });
+    }))
+    .filter(str=> !shouldExcludeStr(str));
 
-    s.stop(`Succeed with data: [${semesters.toString()}]`);
+    console.log(toPrettierStr("Semesters Fetch Result", JSON.stringify(semesters)));
+    
+    ///
+    /// Fetch Programs
+    ///
 
-    // fetch semester
-    for (let i = 1; i < semesters.length; i += 1) {
-        s.start(`Scraping Programs Data | Payload = { semester: ${semesters[i]} }`);
+    interface ProgramMetaData 
+    {
+        value: string,
+        innerHtml: string
+    }
 
-        await page.select('#semester', semesters[i]);
+    for(let i = 0 ; i < semesters.length; i+= 1) 
+    {
+        await page.select("#semester", semesters[i]);
         await page.waitForNetworkIdle();
+        await page.waitForSelector("#semester option");
 
-        const programs = await page.evaluate(async () => {
-            return Array.from(document.querySelectorAll('#program option')).map((element) =>
-                element.innerHTML.trim()
-            );
-        });
+        const programs = (await page.evaluate(async ()=> {
+              return Array.from(document.querySelectorAll('#program option')).map((ele) =>
+                ({ innerHtml: ele.innerHTML.trim(), value: (ele as HTMLSelectElement).value } as ProgramMetaData)
+              );
+        }))
+        .filter(str=> !shouldExcludeStr(str.innerHtml));
+        
+        console.log(toPrettierStr(
+            `${semesters[i]} => Programs Fetch Results:`, 
+            JSON.stringify(programs)
+        ));  
 
-        const programsVal = await page.evaluate(async () => {
-            return Array.from(document.querySelectorAll('#program option')).map(
-                (ele) => (ele as HTMLSelectElement).value
-            );
-        });
+        if(programs.length == 0) continue;
 
-        s.stop(
-            `Succeed with data:  { semester: ${semesters[i]}, programs: [${programs.toString()}] }`
-        );
+        ///
+        /// Fetch Sections
+        ///
 
-        // fetch programs
-        for (let j = 1; j < programs.length; j += 1) {
-            s.start(
-                `Scraping Programs Data | Payload = { semester: ${semesters[i]}, program: ${programs[i]} }`
-            );
-
-            await page.select('#program', programsVal[j]);
+        for(let j = 0 ; j < programs.length; j+= 1)
+        {
+            await page.waitForSelector("#semester option");
+            await page.select('#program', programs[j].value);
             await page.waitForNetworkIdle();
+            await page.waitForSelector("#section option");
 
-            const sections = await page.evaluate(async () => {
-                return Array.from(document.querySelectorAll('#section option')).map((element) =>
-                    element.innerHTML.trim()
+            const sections = (await page.evaluate(async () => {
+                return Array.from(document.querySelectorAll('#section option')).map(
+                    (element) =>element.innerHTML.trim()
                 );
-            });
+            })).filter(str=> !shouldExcludeStr(str));
 
-            sections.splice(0, 1);
+            console.log(toPrettierStr(
+                `${semesters[i]} => ${programs[j].innerHtml} => Sections Fetch Results:`, 
+                JSON.stringify(sections)
+            ));  
 
-            s.stop(
-                `Succeed with data: { semester: ${semesters[i]}, program: ${
-                    programs[j]
-                }, section:${sections.toString()} }`
-            );
+            if(sections.length == 0) continue;
+
+            ///
+            /// Sets meta data
+            ///
 
             metaData[semesters[i]] = {
                 ...metaData[semesters[i]],
-                [programs[j]]: sections
+                [programs[j].innerHtml]: sections
             };
         }
     }
 
     browser.close();
-
+    console.log(`${metaData}\n`);
     return metaData;
 }
+
+
+

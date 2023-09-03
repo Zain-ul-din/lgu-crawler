@@ -29,8 +29,7 @@ export async function scrapTimetable(payload: Payload, page: Page): Promise<any>
             )
             .filter((ele) => ele != null);
     }, payload.program);
-
-    console.log(programsVal);
+    
     if (programsVal.length == 0) {
         page.reload();
         return await scrapTimetable(payload, page);
@@ -55,7 +54,6 @@ export async function scrapTimetable(payload: Payload, page: Page): Promise<any>
         return await scrapTimetable(payload, page);
     }
 
-    console.log(sectionVal);
     page.select('#section', sectionVal[0] as string);
     await page.waitForNetworkIdle();
     page.click('button[type=submit]');
@@ -76,8 +74,7 @@ export async function scrapTimetable(payload: Payload, page: Page): Promise<any>
                     .map((ele) => {
                         const tdData = ele.split('\n');
                         const time = tdData[4].split('-');
-
-                        console.log(tdData);
+                        
                         return {
                             subject: tdData[0],
                             roomNo: tdData[1],

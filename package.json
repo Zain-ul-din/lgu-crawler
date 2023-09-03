@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite-node ./src/index.ts",
+    "prestart": "vite-node ./src/captcha.ts",
     "format": "prettier ./src --write",
     "prettier": "npx prettier ./src --write"
   },

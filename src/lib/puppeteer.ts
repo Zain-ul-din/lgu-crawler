@@ -11,7 +11,7 @@ export default async function usePuppeteer(url: string, params: Params): Promise
 
     await params.initPage(page);
     await page.goto(url, {
-        waitUntil: 'networkidle2'
+        waitUntil: 'networkidle2',
     });
 
     await page.setUserAgent(

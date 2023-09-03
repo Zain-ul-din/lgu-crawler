@@ -1,7 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getDocs, getFirestore } from 'firebase/firestore';
 
-
 const firebaseConfig = {
     apiKey: process.env.apiKey,
     authDomain: process.env.authDomain,
@@ -33,7 +32,7 @@ export const rooms_timetable_col = collection(firebase_store, "rooms_timetable")
 export async function write_metadata(meta_data: any) {
     for (let [key, val] of Object.entries(meta_data))
         await setDoc(
-            doc(metadata_col, (key as string).replace('/', '-')),
+            doc(metadata_col, replaceAll(key as string, '/', '-')),
             { [key]: val },
             { merge: true }
         );
