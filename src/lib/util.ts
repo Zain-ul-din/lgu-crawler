@@ -1,3 +1,7 @@
+/**
+    Stops the main thread for time 
+    @param number of seconds
+**/
 export async function delay(time: number) {
     await new Promise((resolve) => setTimeout(resolve, time * 1000));
 }
