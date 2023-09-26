@@ -1,5 +1,5 @@
 /**
-    Stops the main thread for time 
+    Stops the main thread for given time 
     @param number of seconds
 **/
 export async function delay(time: number) {
