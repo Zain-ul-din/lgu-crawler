@@ -1,3 +1,6 @@
+import { readdirSync, unlinkSync } from "fs"
+import { join } from "path"
+
 /**
     Stops the main thread for given time 
     @param number of seconds
@@ -43,3 +46,13 @@ export function shouldExcludeStr(str: string | undefined) {
     return typeof str !== 'string' || str.length == 0 ||
         potentialInvalidFlags.filter(flag => str.toLocaleLowerCase().includes(flag)).length > 0
 }
+
+/**
+ * removes all files from the given folder path
+ * @param string path of folder
+ */
+export function clearFolder(folderPath: string) {
+    readdirSync(folderPath).forEach(file=> unlinkSync(join (folderPath, file)))
+}
+
+

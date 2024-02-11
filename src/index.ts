@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { intro, outro, spinner, select } from '@clack/prompts';
-import { delay, replaceAll, sleep } from './lib/util';
+import { delay, replaceAll, sleep, clearFolder } from './lib/util';
 import { scrapeMetaData } from './scrapper/meta_data';
 
 import { write_metadata, writeTimetableData, calculateTeachersTimetable, calculatePastTimetableInputOptions, calculateRoomsTimeTable } from './lib/firebase';
@@ -65,6 +65,9 @@ else if(option as CLI_OPTIONS == CLI_OPTIONS.rooms_timetable)
 if ((option as CLI_OPTIONS) != CLI_OPTIONS.crawler)
     process.exit(0)
 
+// removes all screen shots
+clearFolder("/dist")
+
 /// INTRO
 
 intro('Welcome to LGU Timetable Crawler 🤖');
@@ -78,7 +81,6 @@ const intro_cli = async () => {
 await intro_cli();
 
 var metaData = undefined;
-
 var hasCache = existsSync(CACHE_FILE_NAME);
 
 if (hasCache) {
