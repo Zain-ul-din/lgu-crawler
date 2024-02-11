@@ -19,9 +19,10 @@ export async function scrapeMetaData() {
     await page.waitForSelector('#semester');
     await page.waitForSelector("#semester option");
 
+    
     const dropDown = await page.$('#semester');
+    
     await dropDown?.select();
-
     const semesters = (await page.evaluate(async () => {
         return Array.from(document.querySelectorAll('#semester option')).map((element) =>
             element.innerHTML.trim()

@@ -3,6 +3,7 @@
 ///
 
 import { Page } from 'puppeteer';
+import { replaceAll, delay } from "../lib/util"
 
 interface Payload {
     semester: string;
@@ -11,6 +12,10 @@ interface Payload {
 }
 
 export async function scrapTimetable(payload: Payload, page: Page): Promise<any> {
+
+    
+    await page.setViewport({width: 1400, height: 720 });
+
     await page.waitForSelector('#semester');
     const dropDown = await page.$('#semester');
     await dropDown?.select();
@@ -58,10 +63,16 @@ export async function scrapTimetable(payload: Payload, page: Page): Promise<any>
     await page.waitForNetworkIdle();
     page.click('button[type=submit]');
 
+    
+    
     // scrap timetable
-
     await page.waitForNetworkIdle();
+    await delay(1)
+    
+    
+
     const timetableData = await page.evaluate(() => {
+        Array.from(document.querySelectorAll(".footer-copyright")).forEach(ele => ele.style.display = 'none')
         const tbody = Array.from(document.querySelectorAll('tr'));
         tbody.splice(0, 1);
         return tbody
@@ -97,5 +108,12 @@ export async function scrapTimetable(payload: Payload, page: Page): Promise<any>
             }, {});
     });
 
+    // take screen shot
+    await page.screenshot({
+        "type": "png",
+        "path": `./dist/${replaceAll(`${payload.semester} ${payload.program} ${payload.section}`,`/`,'-')}.png`,
+        "fullPage": true
+    })
+    
     return timetableData;
 }
