@@ -66,7 +66,7 @@ if ((option as CLI_OPTIONS) != CLI_OPTIONS.crawler)
     process.exit(0)
 
 // removes all screen shots
-clearFolder("/dist")
+clearFolder("./dist")
 
 /// INTRO
 
