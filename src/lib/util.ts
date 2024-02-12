@@ -1,5 +1,6 @@
 import { readdirSync, unlinkSync } from "fs"
 import { join } from "path"
+import { exec } from "child_process"
 
 /**
     Stops the main thread for given time 
@@ -56,3 +57,15 @@ export function clearFolder(folderPath: string) {
 }
 
 
+/**
+ * commits file to git
+ * @param filePath 
+ * @param commitMsg 
+ */
+export function gitStageChange(
+    filePath: string,
+    commitMsg: string
+) {
+    exec(`git add ${filePath}`)
+    exec(`git commit -m "${commitMsg}"`)
+}

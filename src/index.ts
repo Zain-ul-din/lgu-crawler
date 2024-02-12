@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { intro, outro, spinner, select } from '@clack/prompts';
-import { delay, replaceAll, sleep, clearFolder } from './lib/util';
+import { delay, replaceAll, sleep, clearFolder, gitStageChange } from './lib/util';
 import { scrapeMetaData } from './scrapper/meta_data';
 
 import { write_metadata, writeTimetableData, calculateTeachersTimetable, calculatePastTimetableInputOptions, calculateRoomsTimeTable } from './lib/firebase';
@@ -65,8 +65,6 @@ else if(option as CLI_OPTIONS == CLI_OPTIONS.rooms_timetable)
 if ((option as CLI_OPTIONS) != CLI_OPTIONS.crawler)
     process.exit(0)
 
-// removes all screen shots
-clearFolder("./dist")
 
 /// INTRO
 
@@ -87,6 +85,10 @@ if (hasCache) {
     const file_buffer = readFileSync(CACHE_FILE_NAME, 'utf-8');
     metaData = JSON.parse(file_buffer);
 } else {
+    // removes all screen shots
+    clearFolder("./dist")
+    gitStageChange("./dist", `🚮 removed: all screen-shots at ${new Date().toDateString()}`)
+    
     metaData = await scrapeMetaData();
     s.start('Writing MetaData to firebase');
     await write_metadata(metaData);

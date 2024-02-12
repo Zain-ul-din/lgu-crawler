@@ -3,7 +3,7 @@
 ///
 
 import { Page } from 'puppeteer';
-import { replaceAll, delay } from "../lib/util"
+import { replaceAll, delay, gitStageChange } from "../lib/util"
 
 interface Payload {
     semester: string;
@@ -14,7 +14,7 @@ interface Payload {
 export async function scrapTimetable(payload: Payload, page: Page): Promise<any> {
 
     
-    await page.setViewport({width: 1400, height: 720 });
+    await page.setViewport({width: 1920, height: 1080 });
 
     await page.waitForSelector('#semester');
     const dropDown = await page.$('#semester');
@@ -70,11 +70,31 @@ export async function scrapTimetable(payload: Payload, page: Page): Promise<any>
     await delay(1)
     
     
-
     const timetableData = await page.evaluate(() => {
-        Array.from(document.querySelectorAll(".footer-copyright")).forEach(ele => ele.style.display = 'none')
+
+        // add updated at label
+        (()=>{
+            const ele = document.createElement('h3') as HTMLDivElement
+            const parent = document.querySelector(".panel > div") as HTMLDivElement
+
+            parent.setAttribute('style', `
+                padding: 2rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            `);
+            
+            ele.setAttribute('style', `font-size: 24px;`);
+
+            (parent.firstChild as HTMLDivElement).setAttribute ('style' , "color: white");
+            ele.textContent = `Updated At: ${new Date().toDateString()}`
+            parent.appendChild(ele)
+        })()
+
+        Array.from(document.querySelectorAll(".footer-copyright")).forEach(ele => (ele as HTMLDivElement).style.display = 'none')
         const tbody = Array.from(document.querySelectorAll('tr'));
         tbody.splice(0, 1);
+        
         return tbody
             .map((ele) => {
                 // th & td
@@ -108,12 +128,20 @@ export async function scrapTimetable(payload: Payload, page: Page): Promise<any>
             }, {});
     });
 
-    // take screen shot
-    await page.screenshot({
-        "type": "png",
-        "path": `./dist/${replaceAll(`${payload.semester} ${payload.program} ${payload.section}`,`/`,'-')}.png`,
-        "fullPage": true
+    console.log("done so far");
+
+    await page.waitForSelector(".panel");
+
+    const ssFileName = `${replaceAll(`${payload.semester} ${payload.program} ${payload.section}`,`/`,'-')}.png`;
+    const ssFilePath = `./dist/${ssFileName}`;
+
+    await (await page.$(".panel"))?.screenshot({
+        "type": 'png',
+        "path": ssFilePath
     })
-    
+
+    // add file to git
+    gitStageChange(ssFilePath, `📷 feat:  capture ${ssFileName}`)
+
     return timetableData;
 }
