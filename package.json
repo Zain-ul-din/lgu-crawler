@@ -2,6 +2,11 @@
   "name": "lgu-crawler-v2",
   "version": "2.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "format": "prettier --write ./src"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5"
+  }
 }
-
