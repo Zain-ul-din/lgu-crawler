@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "dev": "vite-node ./src/index.ts",
     "format": "prettier --write ./src"
   },
   "devDependencies": {
