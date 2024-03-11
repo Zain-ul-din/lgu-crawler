@@ -1,36 +1,40 @@
 import {FetchOptions, ofetch} from "ofetch";
 import request_headers from "../static/request_headers.json";
-import { EventEmitter } from "stream";
+import {EventEmitter} from "stream";
 
-type CrawlerEvents = 'crawl'
+type CrawlerEvents = "crawl";
 
 /**
  * Base class for all crawlers.
  * @template T - Type parameter representing the expected result type of the crawler.
-*/
-abstract class Crawler<T=any> {
-
+ */
+abstract class Crawler<T = any> {
   /**
    * An event to inform subscribers about new changes
    */
-  protected readonly event: EventEmitter
-  
+  protected readonly event: EventEmitter;
+
+  /**
+   * Event used to inform subscribers on crawl is finished and emits event with scrapped data
+   */
+  protected static readonly ON_CRAWL: CrawlerEvents = "crawl";
+
   /**
    * Constructor for the Crawler base class
    * @todo
    * call `super` in consumer class
-  */
+   */
   public constructor() {
-    this.event = new EventEmitter()
+    this.event = new EventEmitter();
   }
-  
+
   /**
    * Attaches a listener to the crawler for a specific event.
    * @param event - Event name.
    * @param listener - Callback function executed on event emission.
    */
-  public on(event: CrawlerEvents, listener: (arg: T)=> void) {
-    this.event.on(event, listener)
+  public on(event: CrawlerEvents, listener: (arg: T) => void) {
+    this.event.on(event, listener);
   }
 
   /**
@@ -54,7 +58,6 @@ abstract class Crawler<T=any> {
       ...(opts || {}),
     });
   }
-
 }
 
 export default Crawler;
