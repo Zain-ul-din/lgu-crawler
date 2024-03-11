@@ -10,8 +10,11 @@ type CrawlerEvents = 'crawl'
 */
 abstract class Crawler<T=any> {
 
-  private readonly event: EventEmitter
-
+  /**
+   * An event to inform subscribers about new changes
+   */
+  protected readonly event: EventEmitter
+  
   /**
    * Constructor for the Crawler base class
    * @todo
