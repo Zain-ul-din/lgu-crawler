@@ -48,7 +48,7 @@ class MetaDataCrawler extends Crawler {
   }
 
   /**
-   * Crawls all required pages to fetch metadata
+   * Crawls all required endpoints to fetch metadata
    * @description call `instance.crawl` before accessing any meta data on a instance
    * ### How this Work?
    * - fetch semesters
@@ -76,17 +76,17 @@ class MetaDataCrawler extends Crawler {
    * A helper method to process sections manipulation
    * @param semester semester option value | textContent
    * @param program program textContent. use inside metadata for human readability
-   * @param programId program option value. use to construct request payload 
+   * @param programId program option value. use to construct request payload
    *  since official apis accepts id rather then textContent
    */
   private async processSections(semester: string, program: string, programId: string) {
     const sections = await this.fetchSections(semester, programId);
     this.metaData[semester][program] = sections.textNodes;
-    sections.values.forEach((section) => {
-      this.timeTableRequestPayloads.push({semester, program: programId, section});
+    sections.textNodes.forEach((section, i) => {
+      this.timeTableRequestPayloads.push({semester, program, programId, section, sectionId: sections.values[i]});
     });
   }
-
+  
   /**
    * Fetchs initial semesters
    * @returns HTML Options
