@@ -9,7 +9,12 @@ interface MetaDataCrawlerParams {
   parser: Parser<HTMLOptionsType>;
 }
 
-class MetaDataCrawler extends Crawler {
+interface MetaDataCrawlerReturnType {
+  metaData: MetaDataType;
+  timeTableRequestPayloads: TimetableRequestPayload[];
+}
+
+class MetaDataCrawler extends Crawler<MetaDataCrawlerReturnType> {
   /**
    * Semesters page endpoint
    * @returns static html page
@@ -33,8 +38,8 @@ class MetaDataCrawler extends Crawler {
    * parses HTMLOption tag from html
    */
   private optsParser: Parser<HTMLOptionsType>;
-  public metaData: MetaDataType;
-  public timeTableRequestPayloads: TimetableRequestPayload[];
+  private metaData: MetaDataType;
+  private timeTableRequestPayloads: TimetableRequestPayload[];
 
   /**
    * Creates an instance of meta data crawler.
@@ -49,7 +54,7 @@ class MetaDataCrawler extends Crawler {
 
   /**
    * Crawls all required endpoints to fetch metadata
-   * @description call `instance.crawl` before accessing any meta data on a instance
+   * @description subtribe `instance.on('crawl')` to get scrapped data
    * ### How this Work?
    * - fetch semesters
    * - sends semester in payload to get programs
@@ -60,6 +65,10 @@ class MetaDataCrawler extends Crawler {
     const {textNodes: semesters} = await this.fetchSemesters();
     this.metaData = Object.fromEntries(semesters.map((s) => [s, {}]));
     await promisify(semesters.map(this.processPrograms.bind(this)));
+    this.event.emit(Crawler.ON_CRAWL, {
+      metaData: this.metaData,
+      timeTableRequestPayloads: this.timeTableRequestPayloads,
+    } as MetaDataCrawlerReturnType);
   }
 
   /**
@@ -86,7 +95,7 @@ class MetaDataCrawler extends Crawler {
       this.timeTableRequestPayloads.push({semester, program, programId, section, sectionId: sections.values[i]});
     });
   }
-  
+
   /**
    * Fetchs initial semesters
    * @returns HTML Options
