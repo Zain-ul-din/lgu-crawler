@@ -1,16 +1,41 @@
 import {FetchOptions, ofetch} from "ofetch";
 import request_headers from "../static/request_headers.json";
+import { EventEmitter } from "stream";
+
+type CrawlerEvents = 'crawl'
 
 /**
- * base class for all crawlers
- */
-abstract class Crawler {
+ * Base class for all crawlers.
+ * @template T - Type parameter representing the expected result type of the crawler.
+*/
+abstract class Crawler<T=any> {
+
+  private readonly event: EventEmitter
+
+  /**
+   * Constructor for the Crawler base class
+   * @todo
+   * call `super` in consumer class
+  */
+  public constructor() {
+    this.event = new EventEmitter()
+  }
+  
+  /**
+   * Attaches a listener to the crawler for a specific event.
+   * @param event - Event name.
+   * @param listener - Callback function executed on event emission.
+   */
+  public on(event: CrawlerEvents, listener: (arg: T)=> void) {
+    this.event.on(event, listener)
+  }
+
   /**
    * Request headers to be sent with each request
    */
   protected static readonly REQUEST_HEADERS = {
     ...request_headers,
-    Cookie: "PHPSESSID=mng9udsif6hnrb4domhil0hks1",
+    Cookie: "PHPSESSID=te0fv160anbgo6tpttghpl3k26",
   };
 
   /**
@@ -26,6 +51,7 @@ abstract class Crawler {
       ...(opts || {}),
     });
   }
+
 }
 
 export default Crawler;
