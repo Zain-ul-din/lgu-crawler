@@ -6,7 +6,7 @@ const {writeFileSync, existsSync} = require("fs");
 const ENV_PATH = process.cwd() + "./.env";
 const DEFAULT_PLACEHOLDER = "YOUR_VALUE";
 
-if (existsSync(ENV_PATH)) process.exit(0);
+if (process.env !== 'production') process.exit(0);
 
 writeFileSync(
   `${process.cwd()}/.env`,
