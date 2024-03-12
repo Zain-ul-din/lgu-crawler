@@ -11,8 +11,7 @@ class OptionsParser extends Parser<HTMLOptionsType> {
         text: $(ele).text(),
         value: $(ele).attr("value") || "",
       }))
-      .filter((opt) => opt.value !== "");
-
+      .filter((opt) => opt.value !== "" && !opt.value.startsWith("-"));
     return {
       textNodes: options.map((opt) => opt.text.trim()),
       values: options.map((opt) => opt.value.trim()),
