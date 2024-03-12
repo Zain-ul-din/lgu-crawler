@@ -1,4 +1,4 @@
-import {createCipheriv, createDecipheriv} from "crypto";
+import {createCipheriv, createDecipheriv, createHash} from "crypto";
 import env from "./env";
 
 const ALGO = "aes-256-cbc";
@@ -22,6 +22,10 @@ export function decrypt(data: string) {
   let decrypted = decipher.update(data, "hex", "utf8");
   decrypted += decipher.final("utf8");
   return decrypted;
+}
+
+export function hashStr(str: string) {
+  return createHash("sha256").update(str).digest("hex");
 }
 
 /**
