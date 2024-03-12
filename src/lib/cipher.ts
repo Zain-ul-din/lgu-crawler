@@ -1,7 +1,8 @@
-import {createCipheriv, createDecipheriv, createHash} from "crypto";
+import {Encoding, createCipheriv, createDecipheriv, createHash} from "crypto";
 import env from "./env";
 
-const ALGO = "aes-256-cbc";
+export const CIPHER_ALGO = "aes-256-cbc";
+export const ENCRYPTED_DATA_ENCODING: Encoding = "hex"
 
 const getCredentials = () => ({
   key: Buffer.from(env.OPEN_DB_KEY || "", "hex"),
@@ -10,16 +11,16 @@ const getCredentials = () => ({
 
 export function encrypt(data: string) {
   const {key, iv} = getCredentials();
-  const cipher = createCipheriv(ALGO, key, iv);
-  var crypted = cipher.update(data, "utf8", "hex");
+  const cipher = createCipheriv(CIPHER_ALGO, key, iv);
+  var crypted = cipher.update(data, "utf8", ENCRYPTED_DATA_ENCODING);
   crypted += cipher.final("hex");
   return crypted;
 }
 
 export function decrypt(data: string) {
   const {key, iv} = getCredentials();
-  const decipher = createDecipheriv(ALGO, key, iv);
-  let decrypted = decipher.update(data, "hex", "utf8");
+  const decipher = createDecipheriv(CIPHER_ALGO, key, iv);
+  let decrypted = decipher.update(data, ENCRYPTED_DATA_ENCODING, "utf8");
   decrypted += decipher.final("utf8");
   return decrypted;
 }

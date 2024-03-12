@@ -1,6 +1,6 @@
 import {existsSync, mkdirSync, writeFileSync} from "fs";
 import env from "./env";
-import {encrypt, hashStr} from "./cipher";
+import {encrypt, hashStr, CIPHER_ALGO, ENCRYPTED_DATA_ENCODING} from "./cipher";
 
 const DB_PATH = process.cwd() + "/db";
 const LOCAL_DB_PATH = process.cwd() + "/local_db";
@@ -26,6 +26,8 @@ function writeDBPublic(uid: string, content: any, hash: boolean = true) {
     JSON.stringify(
       {
         updated_at: new Date(),
+        algo: CIPHER_ALGO,
+        encoding: ENCRYPTED_DATA_ENCODING,
         crypted,
       },
       null,
