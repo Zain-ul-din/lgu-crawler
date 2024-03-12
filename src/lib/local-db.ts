@@ -5,7 +5,7 @@ import {encrypt, hashStr} from "./cipher";
 const DB_PATH = process.cwd() + "/db";
 const LOCAL_DB_PATH = process.cwd() + "/local_db";
 
-if (env.NODE_ENV === "development") initLocalDB();
+initLocalDB();
 
 export function writeDB(uid: string, content: any, hash: boolean = true) {
   console.log(`🔃 Going to write '${uid}'`);
@@ -36,5 +36,6 @@ function writeDBPublic(uid: string, content: any, hash: boolean = true) {
 }
 
 function initLocalDB() {
-  if (!existsSync(LOCAL_DB_PATH)) mkdirSync(LOCAL_DB_PATH);
+  if (!existsSync(LOCAL_DB_PATH) && env.NODE_ENV === "development") mkdirSync(LOCAL_DB_PATH);
+  if (!existsSync(DB_PATH)) mkdirSync(DB_PATH);
 }
