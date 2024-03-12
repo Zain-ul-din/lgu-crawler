@@ -1,4 +1,5 @@
 import TimetableDocType from "../types/TimetableDocType";
+import { daysName } from "./constants";
 
 export function computeTeachers(timetables: TimetableDocType[]) {
   const teachers = timetables
@@ -19,11 +20,12 @@ export function computeTeacherTimetable(teacher: string, timetables: TimetableDo
     timetable: {},
   };
 
+  daysName.forEach(name => { teacherTimetable.timetable[name]= []  })
+
   timetables.forEach(({uid, timetable}) => {
     Object.entries(timetable).forEach(([day, lectures]) => {
       lectures.forEach((lecture) => {
         if (lecture.teacher !== teacher) return;
-        if (teacherTimetable.timetable[day] == undefined) teacherTimetable.timetable[day] = [];
         teacherTimetable.timetable[day].push({
           class: uid,
           ...lecture,
@@ -31,7 +33,7 @@ export function computeTeacherTimetable(teacher: string, timetables: TimetableDo
       });
     });
   });
-
+  
   return teacherTimetable;
 }
 
@@ -54,11 +56,12 @@ export function computeRoomTimetable(roomNo: string, timetables: TimetableDocTyp
     timetable: {},
   };
 
+  daysName.forEach(name => { roomTimetable.timetable[name]= []  })
+
   timetables.forEach(({uid, timetable}) => {
     Object.entries(timetable).forEach(([day, lectures]) => {
       lectures.forEach((lecture) => {
         if (lecture.roomNo !== roomNo) return;
-        if (roomTimetable.timetable[day] == undefined) roomTimetable.timetable[day] = [];
         roomTimetable.timetable[day].push({
           class: uid,
           ...lecture,
