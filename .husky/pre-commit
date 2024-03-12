@@ -1,3 +1,2 @@
-echo "Trigged Husky thing"
 # npm test
-
+npx yarn purge

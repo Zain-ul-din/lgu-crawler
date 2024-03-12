@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "ts-node ./src/index.ts",
     "format": "prettier --write ./src",
-    "prepare": "husky"
+    "prepare": "husky",
+    "purge": "node ./scripts/purge.js"
   },
   "devDependencies": {
     "@types/node": "^20.11.25",
