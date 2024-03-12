@@ -9,7 +9,7 @@ interface MetaDataCrawlerParams {
   parser: Parser<HTMLOptionsType>;
 }
 
-interface MetaDataCrawlerReturnType {
+export interface MetaDataCrawlerReturnType {
   metaData: MetaDataType;
   timeTableRequestPayloads: TimetableRequestPayload[];
 }
