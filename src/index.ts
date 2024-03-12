@@ -1,20 +1,31 @@
-import {MetaDataCrawler} from "./crawlers";
-import OptionsParser from "./parsers/OptionsParser";
-import cluster from "cluster";
-import {joinTimetableWorker, spawnTimetablesFetchWorkers} from "./lib/worker";
+import {computeRoomTimetable, computeRooms, computeTeacherTimetable, computeTeachers} from "./lib/computes";
+import {writeDB} from "./lib/local-db";
+import Worker from "./lib/worker";
 
-if (cluster.isPrimary) {
-  const metaDataCrawler = new MetaDataCrawler({parser: new OptionsParser()});
+const worker = new Worker();
 
-  metaDataCrawler.on("crawl", (data) => {
-    spawnTimetablesFetchWorkers(data.timeTableRequestPayloads);
-  });
+worker.onCrawlMetaData(({metaData}) => {
+  writeDB("meta_data", metaData);
 
-  metaDataCrawler.crawl();
-}
-
-joinTimetableWorker((timetableCrawler) => {
-  timetableCrawler.on("crawl", (res) => {
-    console.log(JSON.stringify(res));
-  });
+  // add more services as need
 });
+
+worker.onCrawlTimetable((timetable) => {
+  writeDB(timetable.uid, timetable);
+
+  // add more services as need
+});
+
+worker.onFinish((allTimetables) => {
+  const teachers = computeTeachers(allTimetables);
+  writeDB("teachers", teachers);
+  teachers.forEach((teacher) => writeDB(teacher, computeTeacherTimetable(teacher, allTimetables)));
+
+  const rooms = computeRooms(allTimetables);
+  writeDB("rooms", rooms);
+  rooms.forEach((room) => writeDB(room, computeRoomTimetable(room, allTimetables)));
+
+  // add more services as need
+});
+
+worker.start();
