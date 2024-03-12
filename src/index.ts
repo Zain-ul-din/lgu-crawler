@@ -5,7 +5,7 @@ import Worker from "./lib/worker";
 const worker = new Worker();
 
 worker.onCrawlMetaData(({metaData}) => {
-  writeDB("meta_data", metaData);
+  writeDB("meta_data", metaData, false);
 
   // add more services as need
 });
@@ -18,13 +18,13 @@ worker.onCrawlTimetable((timetable) => {
 
 worker.onFinish((allTimetables) => {
   const teachers = computeTeachers(allTimetables);
-  writeDB("teachers", teachers);
+  writeDB("teachers", teachers, false);
   teachers.forEach((teacher) => writeDB(teacher, computeTeacherTimetable(teacher, allTimetables)));
 
   const rooms = computeRooms(allTimetables);
-  writeDB("rooms", rooms);
+  writeDB("rooms", rooms, false);
   rooms.forEach((room) => writeDB(room, computeRoomTimetable(room, allTimetables)));
-
+  
   // add more services as need
 });
 
