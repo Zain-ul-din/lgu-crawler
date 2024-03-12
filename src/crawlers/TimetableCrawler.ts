@@ -1,4 +1,5 @@
 import Parser from "../parsers/Parser";
+import TimetableDocType from "../types/TimetableDocType";
 import TimetableRequestPayload from "../types/TimetableRequestPayload";
 import TimetableType from "../types/TimetableType";
 import Crawler from "./Crawler";
@@ -7,13 +8,7 @@ interface TimetableCrawlerParams {
   timetableParser: Parser<TimetableType>;
 }
 
-interface TimetableCrawlerReturnType {
-  updatedAt: Date;
-  uid: string;
-  timetable: TimetableType;
-}
-
-class TimetableCrawler extends Crawler<TimetableCrawlerReturnType> {
+class TimetableCrawler extends Crawler<TimetableDocType> {
   private static readonly END_POINT = `https://timetable.lgu.edu.pk/Semesters/semester_info/SEMESTER_TIMETABLE.php`;
 
   private timetableParser: Parser<TimetableType>;
@@ -29,11 +24,14 @@ class TimetableCrawler extends Crawler<TimetableCrawlerReturnType> {
       body: `semester=${semester}&section=${sectionId}&program=${programId}`,
     });
 
-    this.event.emit(Crawler.ON_CRAWL, {
+    const timetable = {
       updatedAt: new Date(),
       uid: `${semester} ${program} ${section}`.replaceAll("/", ""),
       timetable: this.timetableParser.parse(res),
-    } as TimetableCrawlerReturnType);
+    } as TimetableDocType;
+
+    this.event.emit(Crawler.ON_CRAWL, timetable);
+    return timetable;
   }
 }
 
