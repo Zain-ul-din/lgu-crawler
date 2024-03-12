@@ -19,8 +19,9 @@ worker.onCrawlTimetable((timetable) => {
 
 worker.onFinish((allTimetables) => {
 
+  writeDB("all_timetable", allTimetables, false)
   writeDB("timetable_paths", allTimetables.map(t=> t.uid).map(hashStr), false)
-
+  
   const teachers = computeTeachers(allTimetables);
   writeDB("teachers", teachers, false);
   teachers.forEach((teacher) => writeDB(teacher, computeTeacherTimetable(teacher, allTimetables)));
