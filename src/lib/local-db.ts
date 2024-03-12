@@ -1,17 +1,17 @@
 import {existsSync, mkdirSync, writeFileSync} from "fs";
 import env from "./env";
-import {encrypt} from "./cipher";
+import {encrypt, hashStr} from "./cipher";
 
 const DB_PATH = process.cwd() + "/db";
 const LOCAL_DB_PATH = process.cwd() + "/local_db";
 
 if (env.NODE_ENV === "development") initLocalDB();
 
-export function writeDB(uid: string, content: any) {
-  console.log(`🔃 Going to write ${uid}.json`);
+export function writeDB(uid: string, content: any, hash: boolean = true) {
+  console.log(`🔃 Going to write '${uid}'`);
   writeDBLocal(uid, content);
-  writeDBPublic(uid, content);
-  console.log(`✔ Operation succeed ${uid}.json`);
+  writeDBPublic(uid, content, hash);
+  console.log(`✔ Operation succeed '${uid}'`);
 }
 
 function writeDBLocal(uid: string, content: any) {
@@ -19,8 +19,20 @@ function writeDBLocal(uid: string, content: any) {
   writeFileSync(`${LOCAL_DB_PATH}/${uid}.json`, JSON.stringify(content, null, 2), "utf-8");
 }
 
-function writeDBPublic(uid: string, content: any) {
-  writeFileSync(`${DB_PATH}/${uid}.txt`, encrypt(JSON.stringify(content)), "utf-8");
+function writeDBPublic(uid: string, content: any, hash: boolean = true) {
+  const crypted = encrypt(JSON.stringify(content));
+  writeFileSync(
+    `${DB_PATH}/${hash ? hashStr(uid) : uid}.json`,
+    JSON.stringify(
+      {
+        updated_at: new Date(),
+        crypted,
+      },
+      null,
+      2
+    ),
+    "utf-8"
+  );
 }
 
 function initLocalDB() {
