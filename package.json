@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node ./src/index.ts",
-    "format": "prettier --write ./src"
+    "format": "prettier --write ./src",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@types/node": "^20.11.25",
