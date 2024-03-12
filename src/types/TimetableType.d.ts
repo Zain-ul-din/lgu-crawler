@@ -1,5 +1,6 @@
 interface TimetableType {
   [weekName: string]: {
+    class?: string;
     subject: string;
     roomNo: string;
     teacher: string;
