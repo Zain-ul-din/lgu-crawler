@@ -7,13 +7,13 @@ const worker = new Worker();
 worker.onCrawlMetaData(({metaData}) => {
   writeDB("meta_data", metaData, false);
 
-  // add more services as need
+  // add more services as needed
 });
 
 worker.onCrawlTimetable((timetable) => {
   writeDB(timetable.uid, timetable);
 
-  // add more services as need
+  // add more services as needed
 });
 
 worker.onFinish((allTimetables) => {
@@ -25,7 +25,7 @@ worker.onFinish((allTimetables) => {
   writeDB("rooms", rooms, false);
   rooms.forEach((room) => writeDB(room, computeRoomTimetable(room, allTimetables)));
 
-  // add more services as need
+  // add more services as needed
 });
 
 worker.start();
