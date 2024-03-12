@@ -24,7 +24,7 @@ worker.onFinish((allTimetables) => {
   const rooms = computeRooms(allTimetables);
   writeDB("rooms", rooms, false);
   rooms.forEach((room) => writeDB(room, computeRoomTimetable(room, allTimetables)));
-  
+
   // add more services as need
 });
 
