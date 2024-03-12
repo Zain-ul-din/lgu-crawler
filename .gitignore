@@ -1,1 +1,7 @@
 /node_modules
+/db
+/local_db
+
+# env files
+
+.env
