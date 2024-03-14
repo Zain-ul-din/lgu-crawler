@@ -3,3 +3,4 @@ interface DBUpdateStatus<T> {
   similarity: 'identical' | 'different'
 }
 
+export default DBUpdateStatus;

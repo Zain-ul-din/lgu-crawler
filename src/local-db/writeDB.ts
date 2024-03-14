@@ -4,6 +4,7 @@ import { ENV } from "../constants";
 import { CIPHER_ALGO, ENCRYPTED_DATA_ENCODING, encrypt, hashStr } from "./cipher";
 import FileSchema from "./types/FileSchema";
 import { isSame } from "./util";
+import DBUpdateStatus from "./types/DBUpadateStatus";
 
 export function writeDB<T=any>(uid: string, content: T, hash: boolean = true) {
   console.log(`🔃 Going to write '${uid}'`);
