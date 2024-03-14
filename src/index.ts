@@ -1,8 +1,8 @@
 import { ERRORS } from "./constants";
-import { hashStr } from "./lib/cipher";
+import { hashStr } from "./local-db/cipher";
 import {computeRoomTimetable, computeRooms, computeTeacherTimetable, computeTeachers} from "./lib/computes";
-import {writeDB} from "./lib/local-db";
 import Worker from "./lib/worker";
+import { writeDB } from "./local-db";
 
 const worker = new Worker();
 
