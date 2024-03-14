@@ -16,11 +16,11 @@ class TimetableRepository {
 
     const timetableSnapShot = timetables.map((timetable)=> writeDB(timetable.uid, timetable))
     const newTimetableChanges = timetableSnapShot.filter(({ similarity })=> similarity === 'different')
-    writeDB("timetable_new_changes", newTimetableChanges.map(({ content })=> content.uid), false);
+    writeDB("timetable_new_changes", newTimetableChanges.map(({ content })=> hashStr(content.uid)), false);
 
     return this;
   }
-
+  
   public static writeTeacherTimetables(timetables: TimetableDocType[]) {
     const teachers = computeTeachers(timetables);
     writeDB("teachers", teachers, false);
@@ -40,7 +40,7 @@ class TimetableRepository {
 
     const roomsSnapShot = rooms.map((room) => writeDB(room, computeRoomTimetable(room, timetables)));
     const roomsNewChanges = roomsSnapShot.filter(({ similarity })=> similarity == 'different')
-    writeDB("room_new_changes", roomsNewChanges.map(({ content })=> content.uid), false)
+    writeDB("room_new_changes", roomsNewChanges.map(({ content })=> hashStr(content.uid)), false)
 
     return this;
   }
