@@ -9,13 +9,10 @@ new Worker()
   TimetableRepository.writeMetaData(metaData)
 })
 
-.onCrawlTimetable((timetable) => {/* */})
-
-.onFinish((allTimetables) => {
-  TimetableRepository
+.onFinish((allTimetables) => TimetableRepository
   .writeTimetables(allTimetables)
   .writeTeacherTimetables(allTimetables)
   .writeRoomTimetables(allTimetables)
-})
+)
 
 .start();
