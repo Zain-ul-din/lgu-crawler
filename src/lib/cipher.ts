@@ -1,13 +1,13 @@
 import {Encoding, createCipheriv, createDecipheriv, createHash} from "crypto";
-import env from "./env";
+import {ENV} from "../constants";
 import assert from "assert";
 
 export const CIPHER_ALGO = "aes-256-cbc";
 export const ENCRYPTED_DATA_ENCODING: Encoding = "hex"
 
 const getCredentials = () => ({
-  key: Buffer.from(env.OPEN_DB_KEY || "", "hex"),
-  iv: Buffer.from(env.OPEN_DB_IV || "", "hex"),
+  key: Buffer.from(ENV.OPEN_DB_KEY || "", "hex"),
+  iv: Buffer.from(ENV.OPEN_DB_IV || "", "hex"),
 });
 
 export function encrypt(data: string) {

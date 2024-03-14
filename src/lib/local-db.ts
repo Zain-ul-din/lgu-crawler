@@ -1,5 +1,5 @@
 import {existsSync, mkdirSync, writeFileSync} from "fs";
-import env from "./env";
+import {ENV} from "../constants";
 import {encrypt, hashStr, CIPHER_ALGO, ENCRYPTED_DATA_ENCODING} from "./cipher";
 
 const DB_PATH = process.cwd() + "/db";
@@ -15,7 +15,7 @@ export function writeDB(uid: string, content: any, hash: boolean = true) {
 }
 
 function writeDBLocal(uid: string, content: any) {
-  if (env.NODE_ENV !== "development") return;
+  if (ENV.NODE_ENV !== "development") return;
   writeFileSync(`${LOCAL_DB_PATH}/${uid}.json`, JSON.stringify(content, null, 2), "utf-8");
 }
 
@@ -38,6 +38,6 @@ function writeDBPublic(uid: string, content: any, hash: boolean = true) {
 }
 
 function initLocalDB() {
-  if (!existsSync(LOCAL_DB_PATH) && env.NODE_ENV === "development") mkdirSync(LOCAL_DB_PATH);
+  if (!existsSync(LOCAL_DB_PATH) && ENV.NODE_ENV === "development") mkdirSync(LOCAL_DB_PATH);
   if (!existsSync(DB_PATH)) mkdirSync(DB_PATH);
 }
