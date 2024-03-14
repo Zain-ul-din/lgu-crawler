@@ -21,7 +21,7 @@ class TimetableRepository {
     return this;
   }
   
-  public static writeTeacherTimetables(timetables: TimetableDocType[]) {
+  public static writeTeachersTimetable(timetables: TimetableDocType[]) {
     const teachers = computeTeachers(timetables);
     writeDB("teachers", teachers, false);
     writeDB("teacher_paths", teachers.map(hashStr), false)
@@ -32,8 +32,8 @@ class TimetableRepository {
 
     return this;
   }
-
-  public static writeRoomTimetables(timetables: TimetableDocType[]) {
+  
+  public static writeRoomsTimetable(timetables: TimetableDocType[]) {
     const rooms = computeRooms(timetables);
     writeDB("rooms", rooms, false);
     writeDB("rooms_paths", rooms.map(hashStr), false)

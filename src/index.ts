@@ -11,8 +11,8 @@ new Worker()
 
 .onFinish((allTimetables) => TimetableRepository
   .writeTimetables(allTimetables)
-  .writeTeacherTimetables(allTimetables)
-  .writeRoomTimetables(allTimetables)
+  .writeTeachersTimetable(allTimetables)
+  .writeRoomsTimetable(allTimetables)
 )
 
 .start();
