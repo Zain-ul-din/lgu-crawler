@@ -17,6 +17,8 @@ class TimetableRepository {
     const timetableSnapShot = timetables.map((timetable)=> writeDB(timetable.uid, timetable))
     const newTimetableChanges = timetableSnapShot.filter(({ similarity })=> similarity === 'different')
     writeDB("timetable_new_changes", newTimetableChanges.map(({ content })=> content.uid), false);
+
+    return this;
   }
 
   public static writeTeacherTimetables(timetables: TimetableDocType[]) {
@@ -27,8 +29,10 @@ class TimetableRepository {
     const teachersSnapShot = teachers.map((teacher) => writeDB(teacher, computeTeacherTimetable(teacher, timetables)));
     const teacherNewChanges = teachersSnapShot.filter(({ similarity }) => similarity === 'different')
     writeDB("teacher_new_changes", teacherNewChanges.map(({ content}) => hashStr(content.uid)), false)  
+
+    return this;
   }
-  
+
   public static writeRoomTimetables(timetables: TimetableDocType[]) {
     const rooms = computeRooms(timetables);
     writeDB("rooms", rooms, false);
@@ -37,6 +41,8 @@ class TimetableRepository {
     const roomsSnapShot = rooms.map((room) => writeDB(room, computeRoomTimetable(room, timetables)));
     const roomsNewChanges = roomsSnapShot.filter(({ similarity })=> similarity == 'different')
     writeDB("room_new_changes", roomsNewChanges.map(({ content })=> content.uid), false)
+
+    return this;
   }
 }
 

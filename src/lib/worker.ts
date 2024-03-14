@@ -25,14 +25,17 @@ class Worker {
 
   public onCrawlMetaData(cb: (data: MetaDataCrawlerReturnType) => void) {
     this.onCrawlMetaDataEvent.on(Worker.EVENT_NAMES.ON_CRAWL_METADATA, cb);
+    return this;
   }
 
   public onCrawlTimetable(cb: (data: TimetableDocType) => void) {
     this.onCrawlTimetableEvent.on(Worker.EVENT_NAMES.ON_CRAWL_TIMETABLE, cb);
+    return this;
   }
 
   public onFinish(cb: (data: TimetableDocType[]) => void) {
     this.onCrawlFinishEvent.on(Worker.EVENT_NAMES.ON_CRAWL_FINISH, cb);
+    return this;
   }
 
   public constructor() {
@@ -45,8 +48,9 @@ class Worker {
   public start() {
     this.scrapMetaData();
     this.registerWorkers();
+    return this;
   }
-
+  
   private scrapMetaData() {
     if (!cluster.isPrimary) return;
 
