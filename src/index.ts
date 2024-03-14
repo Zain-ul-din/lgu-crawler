@@ -1,3 +1,4 @@
+import { ERRORS } from "./constants";
 import { hashStr } from "./lib/cipher";
 import {computeRoomTimetable, computeRooms, computeTeacherTimetable, computeTeachers} from "./lib/computes";
 import {writeDB} from "./lib/local-db";
@@ -5,16 +6,13 @@ import Worker from "./lib/worker";
 
 const worker = new Worker();
 
-worker.onCrawlMetaData(({metaData}) => {
+worker.onCrawlMetaData(({metaData,  timeTableRequestPayloads}) => {
+  if(timeTableRequestPayloads.length == 0) throw ERRORS.INVALID_COOKIE;
   writeDB("meta_data", metaData, false);
-  
-  // add more services as needed
 });
 
 worker.onCrawlTimetable((timetable) => {
   writeDB(timetable.uid, timetable);
-
-  // add more services as needed
 });
 
 worker.onFinish((allTimetables) => {
@@ -32,7 +30,6 @@ worker.onFinish((allTimetables) => {
   rooms.forEach((room) => writeDB(room, computeRoomTimetable(room, allTimetables)));
   writeDB("rooms_paths", rooms.map(hashStr), false)
   
-  // add more services as needed
 });
 
 worker.start();
