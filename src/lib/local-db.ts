@@ -1,6 +1,6 @@
-import {existsSync, mkdirSync, writeFileSync} from "fs";
+import {existsSync, mkdirSync, readFileSync, writeFileSync} from "fs";
 import {ENV} from "../constants";
-import {encrypt, hashStr, CIPHER_ALGO, ENCRYPTED_DATA_ENCODING} from "./cipher";
+import {encrypt, hashStr, CIPHER_ALGO, ENCRYPTED_DATA_ENCODING, decrypt} from "./cipher";
 
 const DB_PATH = process.cwd() + "/db";
 const LOCAL_DB_PATH = process.cwd() + "/local_db";
@@ -12,6 +12,13 @@ export function writeDB(uid: string, content: any, hash: boolean = true) {
   writeDBLocal(uid, content);
   writeDBPublic(uid, content, hash);
   console.log(`✔ Operation succeed '${uid}'`);
+}
+
+export function readDB(uid: string) {
+  const filePath = `${LOCAL_DB_PATH}/${uid}.json`;
+  if(!existsSync(filePath)) return "";
+  const { crypted } = JSON.parse(readFileSync(filePath, 'utf-8'));
+  return decrypt(crypted)
 }
 
 function writeDBLocal(uid: string, content: any) {
