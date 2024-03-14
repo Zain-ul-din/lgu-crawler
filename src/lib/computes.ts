@@ -1,5 +1,5 @@
 import TimetableDocType from "../types/TimetableDocType";
-import { daysName } from "./constants";
+import { WEEK_DAYS_NAME } from "../constants";
 
 export function computeTeachers(timetables: TimetableDocType[]) {
   const teachers = timetables
@@ -20,7 +20,7 @@ export function computeTeacherTimetable(teacher: string, timetables: TimetableDo
     timetable: {},
   };
 
-  daysName.forEach(name => { teacherTimetable.timetable[name]= []  })
+  WEEK_DAYS_NAME.forEach(name => { teacherTimetable.timetable[name]= []  })
 
   timetables.forEach(({uid, timetable}) => {
     Object.entries(timetable).forEach(([day, lectures]) => {
@@ -56,7 +56,7 @@ export function computeRoomTimetable(roomNo: string, timetables: TimetableDocTyp
     timetable: {},
   };
 
-  daysName.forEach(name => { roomTimetable.timetable[name]= []  })
+  WEEK_DAYS_NAME.forEach(name => { roomTimetable.timetable[name]= []  })
 
   timetables.forEach(({uid, timetable}) => {
     Object.entries(timetable).forEach(([day, lectures]) => {
@@ -69,6 +69,6 @@ export function computeRoomTimetable(roomNo: string, timetables: TimetableDocTyp
       });
     });
   });
-
+  
   return roomTimetable;
 }
