@@ -6,7 +6,7 @@ const fs = require("fs");
 const path = require("path");
 
 const DIR = path.join(process.cwd(), "db");
-const TWO_DAYS_IN_MS = 2 * 24 * 60 * 60 * 1000; // 2 days in milliseconds
+const TWO_DAYS_IN_MS = 30 * (24 * 60 * 60 * 1000); // N days in milliseconds
 
 // Get a list of files in the directory
 const files = fs.readdirSync(DIR);
@@ -16,7 +16,7 @@ files.forEach((file) => {
   const stats = fs.statSync(filePath);
   const timeSinceLastModified = Date.now() - stats.mtime.getTime();
 
-  // Check if the file hasn't been updated for 2 days
+  // Check if the file hasn't been updated for N days
   if (timeSinceLastModified > TWO_DAYS_IN_MS) {
     console.log(`Deleting stale file: ${file}`);
     fs.unlinkSync(filePath); // Delete the file
