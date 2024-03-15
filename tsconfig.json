@@ -4,11 +4,14 @@
     "experimentalDecorators": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "outDir": "dist",
+    "outDir": "./dist",
     "esModuleInterop": true,
+    "rootDir": "./src",
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true
-  }
+  },
+  "include": ["./src/**/*.ts"]
 }
+// tsc --project tsconfig.json
