@@ -1,5 +1,6 @@
 /node_modules
 /local_db
+/dist
 
 # env files
 .env
