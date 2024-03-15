@@ -27,11 +27,12 @@ class TimetableParser extends Parser {
           .toArray()
           .map((ele) => $(ele).text().trim());
         return this.parseTextNodes(textNodes);
-      });
+      })
+      .sort((lhs, rhs)=> (lhs.startTime.hours * 60 + lhs.startTime.minutes) - (rhs.startTime.hours * 60 + rhs.startTime.minutes))
 
     return {[weekName]: lectures};
   }
-
+  
   private parseTextNodes(nodes: string[]) {
     const time = nodes[4].split("-");
     return {
