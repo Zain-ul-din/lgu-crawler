@@ -20,15 +20,11 @@ jobs:
           echo "OPEN_DB_IV=${{ secrets.OPEN_DB_IV }}" >> .env
           echo "PHPSESSID=${{ secrets.PHPSESSID }}" >> .env
 
-      - name: Print .env file content
-        run: cat .env
+      - name: Install Packages
+        run: yarn && yarn add -D
 
-      - name: Generate random string
-        id: random_string
-        run: echo "RANDOM_STRING=$(openssl rand -hex 16)" >> date.txt
-
-      - name: Print random string
-        run: echo "${{ steps.random_string.outputs.RANDOM_STRING }}"
+      - name: Burn 🔥
+        run: yarn dev
 
       - name: Push to Github
         run: |
