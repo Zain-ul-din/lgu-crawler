@@ -21,7 +21,7 @@ jobs:
           echo "PHPSESSID=${{ secrets.PHPSESSID }}" >> .env
 
       - name: Install Packages
-        run: yarn && yarn add -D
+        run: yarn
 
       - name: Burn 🔥
         run: yarn dev
