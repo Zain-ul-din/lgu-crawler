@@ -6,12 +6,22 @@ on:
       - master
 
 jobs:
-  generate_random_string:
+  crawl:
     runs-on: ubuntu-latest
 
     steps:
       - name: Set up Git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
+      - name: Create .env file
+        run: |
+          echo "NODE_ENV=${{ secrets.NODE_ENV }}" > .env
+          echo "OPEN_DB_KEY=${{ secrets.OPEN_DB_KEY }}" >> .env
+          echo "OPEN_DB_IV=${{ secrets.OPEN_DB_IV }}" >> .env
+          echo "PHPSESSID=${{ secrets.PHPSESSID }}" >> .env
+
+      - name: Print .env file content
+        run: cat .env
 
       - name: Generate random string
         id: random_string
@@ -22,8 +32,11 @@ jobs:
 
       - name: Push to Github
         run: |
-          git add ./date.txt
+          git add ./db
           git config --global user.name "Zain-ul-din"
           git config --global user.email "Zain-ul-din@users.noreply.github.com"
-          git commit -m "updated: date.txt"
+          git commit -m "🤖 Github Action: updated encrypted DB"
           git push origin master
+
+# Appendix:
+# https://stackoverflow.com/questions/72851548/permission-denied-to-github-actionsbot
