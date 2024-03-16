@@ -57,7 +57,6 @@ class TimetableRepository {
     if(!isJsonString(dbContent)) return false;
     const timetable = JSON.parse(dbContent) as any
     if(!Object.hasOwn(timetable, 'timetable' as (keyof TimetableDocType))) return false;
-    console.log(JSON.stringify(curr.timetable)  ,' === ', JSON.stringify((timetable as TimetableDocType).timetable))
     return JSON.stringify(curr.timetable) === JSON.stringify((timetable as TimetableDocType).timetable);
   }
 }
