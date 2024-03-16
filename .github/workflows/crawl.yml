@@ -23,9 +23,6 @@ jobs:
       - name: Push to Github
         run: |
           git add ./date.txt
-          git config --global user.name "Zain-ul-din"
-          git config --global user.email "Zain-ul-din@users.noreply.github.com"
-          git remote set-url --push origin https://Zain-ul-din:${{secrets.GITHUB_TOKEN}}@github.com/Zain-ul-din/lgu-crawler
           git commit -m "updated: date.txt"
           git push origin master
           echo "done"
