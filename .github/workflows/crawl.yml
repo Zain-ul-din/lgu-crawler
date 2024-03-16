@@ -1,0 +1,27 @@
+name: Crawl
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  generate_random_string:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v2
+
+      - name: Generate random string
+        id: random_string
+        run: echo "RANDOM_STRING=$(openssl rand -hex 16)" >> date.txt
+
+      - name: Print random string
+        run: echo "${{ steps.random_string.outputs.RANDOM_STRING }}"
+
+      - name: Push to Github
+        run: |
+          git add ./date.txt
+          git commit -m "updated: date.txt"
+          git push origin master
