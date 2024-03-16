@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "node ./scripts/env.js && ts-node ./src/index.ts",
+    "dev": "ts-node ./src/index.ts",
     "format": "prettier --write ./src ./scripts",
     "prepare": "husky",
     "purge": "node ./scripts/purge.js"
