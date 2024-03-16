@@ -1,9 +1,7 @@
 name: Crawl
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
 
 jobs:
   crawl:
@@ -18,7 +16,7 @@ jobs:
           echo "NODE_ENV=${{ secrets.NODE_ENV }}" > .env
           echo "OPEN_DB_KEY=${{ secrets.OPEN_DB_KEY }}" >> .env
           echo "OPEN_DB_IV=${{ secrets.OPEN_DB_IV }}" >> .env
-          echo "PHPSESSID=${{ secrets.PHPSESSID }}" >> .env
+          echo "PHPSESSID=${{ inputs.PHPSESSID }}" >> .env
 
       - name: Install Packages
         run: yarn
@@ -36,3 +34,7 @@ jobs:
 
 # Appendix:
 # https://stackoverflow.com/questions/72851548/permission-denied-to-github-actionsbot
+
+# Trigger Action using API call
+# https://github.com/jbranchaud/til/blob/master/github-actions/trigger-a-workflow-via-an-api-call.md
+
