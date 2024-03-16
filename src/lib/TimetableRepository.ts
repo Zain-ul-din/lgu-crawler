@@ -20,7 +20,7 @@ class TimetableRepository {
       compare: TimetableRepository.compareDBTimetable
     }))
     const newTimetableChanges = timetableSnapShot.filter(({ similarity })=> similarity === 'different')
-    writeDB("timetable_new_changes", newTimetableChanges.map(({ content })=> hashStr(content.uid)), { hash: false });
+    writeDB("timetables_new_changes", newTimetableChanges.map(({ content })=> hashStr(content.uid)), { hash: false });
 
     return this;
   }
@@ -34,7 +34,7 @@ class TimetableRepository {
       compare: TimetableRepository.compareDBTimetable
     }));
     const teacherNewChanges = teachersSnapShot.filter(({ similarity }) => similarity === 'different')
-    writeDB("teacher_new_changes", teacherNewChanges.map(({ content}) => hashStr(content.uid)), { hash: false })  
+    writeDB("teachers_new_changes", teacherNewChanges.map(({ content}) => hashStr(content.uid)), { hash: false })  
 
     return this;
   }
@@ -48,7 +48,7 @@ class TimetableRepository {
       compare: TimetableRepository.compareDBTimetable
     }));
     const roomsNewChanges = roomsSnapShot.filter(({ similarity })=> similarity == 'different')
-    writeDB("room_new_changes", roomsNewChanges.map(({ content })=> hashStr(content.uid)), { hash: false })
+    writeDB("rooms_new_changes", roomsNewChanges.map(({ content })=> hashStr(content.uid)), { hash: false })
 
     return this;
   }
