@@ -16,3 +16,8 @@ export function chunkifyArray<T>(arr: T[], chunks: number) {
 export function clamp(num: number, min: number, max: number) {
   return num <= min ? min : num >= max ? max : num;
 }
+
+export function isJsonString(str: string) {
+  try { JSON.parse(str);  } catch (e) { return false; }
+  return true;
+}
