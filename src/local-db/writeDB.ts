@@ -6,6 +6,7 @@ import FileSchema from "./types/FileSchema";
 import { isSame } from "./util";
 import DBUpdateStatus from "./types/DBUpadateStatus";
 import DBWriteOptions from "./types/DBWriteOptions";
+import pc from "picocolors"
 
 const DEFAULT_OPTIONS: DBWriteOptions<any> = {
   hash: true,
@@ -16,9 +17,7 @@ const DEFAULT_OPTIONS: DBWriteOptions<any> = {
 
 export function writeDB<T=any>(uid: string, content: T, options: DBWriteOptions<T> = DEFAULT_OPTIONS) {
   const _options = { ...DEFAULT_OPTIONS, ...options };
-  console.log(`🔃 Going to write '${uid}'`);
   writeDBLocal(uid, content);
-  console.log(`✔ Operation succeed '${uid}'`);
   return writeDBPublic<T>(uid, content, _options);
 }
 
@@ -42,6 +41,7 @@ function writeDBPublic<T>(uid: string, content: T, {
   
   const similarity = isSame(fileUID, content, compare) ? 'identical' : 'different'
   writeFileSync(`${DB_PATH}/${fileUID}.json`,JSON.stringify(fileData,null,2),"utf-8");
+  console.log(`${pc.cyan('✔ Operation succeed')} ${pc.magenta(`${uid}`)}`);
   
   return {
     similarity,
