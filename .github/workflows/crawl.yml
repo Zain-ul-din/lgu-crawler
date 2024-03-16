@@ -2,6 +2,12 @@ name: Crawl
 
 on:
   workflow_dispatch:
+    inputs:
+      session_id:
+        default: NONE
+        description: Php Session ID use to bypass login
+        required: true
+        type: string
 
 jobs:
   crawl:
