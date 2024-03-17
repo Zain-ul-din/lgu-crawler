@@ -14,7 +14,7 @@ class TimetableParser extends Parser {
       }, {});
     return timetable;
   }
-
+  
   private parseRow($: CheerioAPI, row: Element) {
     const weekName = $(row).find("th").text();
     const tdNodes = $(row).find("td").toArray();

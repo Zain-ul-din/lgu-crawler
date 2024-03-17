@@ -19,7 +19,7 @@ export function computeTeacherTimetable(teacher: string, timetables: TimetableDo
     uid: teacher,
     timetable: {},
   };
-
+  
   WEEK_DAYS_NAME.forEach(name => { teacherTimetable.timetable[name]= []  })
 
   timetables.forEach(({uid, timetable}) => {
