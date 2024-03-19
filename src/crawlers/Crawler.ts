@@ -1,7 +1,7 @@
 import {FetchOptions, ofetch} from "ofetch";
 import request_headers from "../static/request_headers.json";
 import {EventEmitter} from "stream";
-import { ENV } from "../constants";
+import {ENV} from "../constants";
 
 type CrawlerEvents = "crawl";
 
@@ -45,7 +45,7 @@ abstract class Crawler<T = any> {
     ...request_headers,
     Cookie: `PHPSESSID=${ENV.PHPSESSID}`,
   };
-  
+
   /**
    * Fetchs content by making http request
    * @param url target URL

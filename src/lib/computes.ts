@@ -1,5 +1,5 @@
 import TimetableDocType from "../types/TimetableDocType";
-import { WEEK_DAYS_NAME } from "../constants";
+import {WEEK_DAYS_NAME} from "../constants";
 
 export function computeTeachers(timetables: TimetableDocType[]) {
   const teachers = timetables
@@ -19,8 +19,10 @@ export function computeTeacherTimetable(teacher: string, timetables: TimetableDo
     uid: teacher,
     timetable: {},
   };
-  
-  WEEK_DAYS_NAME.forEach(name => { teacherTimetable.timetable[name]= []  })
+
+  WEEK_DAYS_NAME.forEach((name) => {
+    teacherTimetable.timetable[name] = [];
+  });
 
   timetables.forEach(({uid, timetable}) => {
     Object.entries(timetable).forEach(([day, lectures]) => {
@@ -33,7 +35,15 @@ export function computeTeacherTimetable(teacher: string, timetables: TimetableDo
       });
     });
   });
-  
+
+  // sorts lectures
+  WEEK_DAYS_NAME.forEach((day) => {
+    teacherTimetable.timetable[day] = teacherTimetable.timetable[day].sort(
+      (lhs, rhs) =>
+        lhs.startTime.hours * 60 + lhs.startTime.minutes - (rhs.startTime.hours * 60 + rhs.startTime.minutes)
+    );
+  });
+
   return teacherTimetable;
 }
 
@@ -56,7 +66,9 @@ export function computeRoomTimetable(roomNo: string, timetables: TimetableDocTyp
     timetable: {},
   };
 
-  WEEK_DAYS_NAME.forEach(name => { roomTimetable.timetable[name]= []  })
+  WEEK_DAYS_NAME.forEach((name) => {
+    roomTimetable.timetable[name] = [];
+  });
 
   timetables.forEach(({uid, timetable}) => {
     Object.entries(timetable).forEach(([day, lectures]) => {
@@ -69,6 +81,14 @@ export function computeRoomTimetable(roomNo: string, timetables: TimetableDocTyp
       });
     });
   });
-  
+
+  // sorts lectures
+  WEEK_DAYS_NAME.forEach((day) => {
+    roomTimetable.timetable[day] = roomTimetable.timetable[day].sort(
+      (lhs, rhs) =>
+        lhs.startTime.hours * 60 + lhs.startTime.minutes - (rhs.startTime.hours * 60 + rhs.startTime.minutes)
+    );
+  });
+
   return roomTimetable;
 }

@@ -26,11 +26,11 @@ class TimetableCrawler extends Crawler<TimetableDocType> {
 
     const timetable: TimetableDocType = {
       updatedAt: new Date(),
-      payload: { semester, section, program },
+      payload: {semester, section, program},
       uid: `${semester} ${program} ${section}`.replaceAll("/", ""),
       timetable: this.timetableParser.parse(res),
     };
-    
+
     this.event.emit(Crawler.ON_CRAWL, timetable);
     return timetable;
   }

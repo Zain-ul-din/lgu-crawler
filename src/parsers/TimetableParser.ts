@@ -14,7 +14,7 @@ class TimetableParser extends Parser {
       }, {});
     return timetable;
   }
-  
+
   private parseRow($: CheerioAPI, row: Element) {
     const weekName = $(row).find("th").text();
     const tdNodes = $(row).find("td").toArray();
@@ -28,11 +28,14 @@ class TimetableParser extends Parser {
           .map((ele) => $(ele).text().trim());
         return this.parseTextNodes(textNodes);
       })
-      .sort((lhs, rhs)=> (lhs.startTime.hours * 60 + lhs.startTime.minutes) - (rhs.startTime.hours * 60 + rhs.startTime.minutes))
+      .sort(
+        (lhs, rhs) =>
+          lhs.startTime.hours * 60 + lhs.startTime.minutes - (rhs.startTime.hours * 60 + rhs.startTime.minutes)
+      );
 
     return {[weekName]: lectures};
   }
-  
+
   private parseTextNodes(nodes: string[]) {
     const time = nodes[4].split("-");
     return {

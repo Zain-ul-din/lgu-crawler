@@ -39,7 +39,7 @@ class Worker {
   }
 
   public constructor() {
-    this.availableCores = clamp(os.cpus().length, 2, 120);
+    this.availableCores = clamp(os.cpus().length, 2, 2);
     this.onCrawlMetaDataEvent = new EventEmitter();
     this.onCrawlTimetableEvent = new EventEmitter();
     this.onCrawlFinishEvent = new EventEmitter();
@@ -50,7 +50,7 @@ class Worker {
     this.registerWorkers();
     return this;
   }
-  
+
   private scrapMetaData() {
     if (!cluster.isPrimary) return;
 

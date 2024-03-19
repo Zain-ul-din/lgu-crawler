@@ -18,6 +18,10 @@ export function clamp(num: number, min: number, max: number) {
 }
 
 export function isJsonString(str: string) {
-  try { JSON.parse(str);  } catch (e) { return false; }
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
   return true;
 }

@@ -3,7 +3,7 @@ import {ENV} from "../constants";
 import assert from "assert";
 
 export const CIPHER_ALGO = "aes-256-cbc";
-export const ENCRYPTED_DATA_ENCODING: Encoding = "hex"
+export const ENCRYPTED_DATA_ENCODING: Encoding = "hex";
 
 const getCredentials = () => ({
   key: Buffer.from(ENV.OPEN_DB_KEY || "", "hex"),
@@ -15,7 +15,7 @@ export function encrypt(data: string) {
   const cipher = createCipheriv(CIPHER_ALGO, key, iv);
   var crypted = cipher.update(data, "utf8", ENCRYPTED_DATA_ENCODING);
   crypted += cipher.final("hex");
-  assert(data === decrypt(crypted), '❌ decryption fail')
+  assert(data === decrypt(crypted), "❌ decryption fail");
   return crypted;
 }
 

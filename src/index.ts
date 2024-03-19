@@ -1,21 +1,21 @@
-import { ERRORS } from "./constants";
+import {ERRORS} from "./constants";
 import Worker from "./lib/worker";
 import TimetableRepository from "./lib/TimetableRepository";
-import { logOnCrawlTimetable } from "./lib/logger";
+import {logOnCrawlTimetable} from "./lib/logger";
 
 new Worker()
 
-.onCrawlMetaData(({metaData,  timeTableRequestPayloads}) => {
-  if(timeTableRequestPayloads.length == 0) throw ERRORS.INVALID_COOKIE;
-  TimetableRepository.writeMetaData(metaData)
-})
+  .onCrawlMetaData(({metaData, timeTableRequestPayloads}) => {
+    if (timeTableRequestPayloads.length == 0) throw ERRORS.INVALID_COOKIE;
+    TimetableRepository.writeMetaData(metaData);
+  })
 
-.onCrawlTimetable(logOnCrawlTimetable)
+  .onCrawlTimetable(logOnCrawlTimetable)
 
-.onFinish((allTimetables) => TimetableRepository
-  .writeTimetables(allTimetables)
-  .writeTeachersTimetable(allTimetables)
-  .writeRoomsTimetable(allTimetables)
-)
+  .onFinish((allTimetables) =>
+    TimetableRepository.writeTimetables(allTimetables)
+      .writeTeachersTimetable(allTimetables)
+      .writeRoomsTimetable(allTimetables)
+  )
 
-.start();
+  .start();
