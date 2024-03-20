@@ -8,6 +8,11 @@ on:
         description: Php Session ID use to bypass login
         required: true
         type: string
+      hook:
+        default: https://www.google.com
+        description: Hook to trigger after done with scraping. e.g. https://vercel.com/docs/deployments/deploy-hooks
+        required: true
+        type: string
 
 jobs:
   crawl:
@@ -38,11 +43,19 @@ jobs:
           git commit -m "🤖 Github Action: updated encrypted DB"
           git push origin master
 
-# Appendix:
-# https://stackoverflow.com/questions/72851548/permission-denied-to-github-actionsbot
+      - name: Trigger Hook 🪝
+        run: CURL -X POST ${{ inputs.hook }}
+##
+##
+## Appendix:
+## https://stackoverflow.com/questions/72851548/permission-denied-to-github-actionsbot
+##
+##
 
-# Trigger Action using API call
-# https://github.com/jbranchaud/til/blob/master/github-actions/trigger-a-workflow-via-an-api-call.md
+##
+## Trigger Action using API call
+## https://github.com/jbranchaud/til/blob/master/github-actions/trigger-a-workflow-via-an-api-call.md
+##
 
 ##
 ## USAGE:
