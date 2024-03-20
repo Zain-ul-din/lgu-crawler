@@ -44,13 +44,13 @@ jobs:
           git push origin master
 
       - name: Trigger Hook 🪝
-        run: CURL -X POST ${{ inputs.hook }}
+        run: node ./scripts/post.js ${{ inputs.hook }}
 ##
 ##
 ## Appendix:
 ## https://stackoverflow.com/questions/72851548/permission-denied-to-github-actionsbot
 ##
-##
+##A
 
 ##
 ## Trigger Action using API call
