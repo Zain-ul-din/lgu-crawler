@@ -28,6 +28,7 @@ jobs:
           echo "OPEN_DB_KEY=${{ secrets.OPEN_DB_KEY }}" >> .env
           echo "OPEN_DB_IV=${{ secrets.OPEN_DB_IV }}" >> .env
           echo "PHPSESSID=${{ inputs.session_id }}" >> .env
+          echo "VERCEL_DEPLOYMENT_HOOK=${{ inputs.hook }}" >> .env
 
       - name: Install Packages
         run: yarn
@@ -44,7 +45,7 @@ jobs:
           git push origin master
 
       - name: Trigger Hook 🪝
-        run: node ./scripts/post.js ${{ inputs.hook }}
+        run: node ./scripts/vercel-deploy.js
 ##
 ##
 ## Appendix:
