@@ -6,7 +6,7 @@ A Blazingly fast crawler that scraps all data from the LGU timetable website.
 
 - **Blazingly fast 🔥**
 
-  It is capable of retrieving all data in less than a minute, thanks to the `Node Js Cluster` module which allows parallel data fetching by spawning child process(same as OS fork).
+  It is capable of retrieving all data in less than 30 sec, thanks to the `Node Js Cluster` module which allows parallel data fetching by spawning child process(same as OS fork).
 
 - **Zero DB Dependencies 🧠**
 
