@@ -35,10 +35,10 @@ This is how data encryption works and how you should approach it.
 **Diagram:**
 
 ```md
-  GET -> meta_data.json
-       |
-       | --> Generate hash from user input ('<semester> <program> <section>'.replaceAll('/', ''))
-           |
-           | --> GET base_url/generated_hash.json => timetable
+GET -> meta_data.json
+     |
+     | --> Generate hash from user input ('<semester> <program> <section>'.replaceAll('/', ''))
+         |
+         | --> GET base_url/generated_hash.json => timetable
 ```
 
