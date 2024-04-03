@@ -28,6 +28,17 @@ This is how data encryption works and how you should approach it.
 
 **Plan Text:** In the db folder almost every file name is encrypted with a `sha-256` hash but a few file names are not hashed. these files are useful for loading initial data like `meta_data.json` which contains all drops-down data.
 
-**File data decryption** Every file in the DB contains `crypted` text and some metadata which is helpful to know about which `encoding` and `algorithm` is being used. To decrypt files you also need `key` ([check symmetric key algorithm](https://en.wikipedia.org/wiki/Symmetric-key_algorithm))and [`iv`](https://en.wikipedia.org/wiki/Initialization_vector). These credentials can be obtained by contacting the maintainer in the issue or discussion section.
+**File data decryption:** Every file in the DB contains `crypted` text and some metadata which is helpful to know about which `encoding` and `algorithm` is being used. To decrypt files you also need `key` ([check symmetric key algorithm](https://en.wikipedia.org/wiki/Symmetric-key_algorithm))and [`iv`](https://en.wikipedia.org/wiki/Initialization_vector). These credentials can be obtained by contacting the maintainer in the issue or discussion section.
 
+**File names:** All file names are hashed by the `sha-256` algorithm. To generate hash from user input the input must be arranged in the following order ``${semester} ${program} ${section}`.replaceAll("/", "")`` before passing to hash function.
+
+**Diagram:**
+
+```md
+  GET -> meta_data.json
+       |
+       | --> Generate hash from user input ('<semester> <program> <section>'.replaceAll('/', ''))
+           |
+           | --> GET base_url/generated_hash.json => timetable
+```
 
