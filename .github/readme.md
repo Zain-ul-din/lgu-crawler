@@ -19,3 +19,6 @@ A Blazingly fast crawler that scraps all data from the LGU timetable website.
 - **Intuivtive Code & APIS 🦄**
 
   This project uses both OOP and functional programming paradigms. for use cases, it exposes event-driven APIS which makes it easier for the the developer to build new applications on top of this project.
+
+## API Usage
+
