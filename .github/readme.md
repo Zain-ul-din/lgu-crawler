@@ -22,3 +22,12 @@ A Blazingly fast crawler that scraps all data from the LGU timetable website.
 
 ## API Usage
 
+We allow developers to use scrapped data on their websites using [Github raw APIS](https://docs.github.com/en/rest/repos/contents?apiVersion=2022-11-28). Even though data is public and can be accessed easily using HTTP requests but to decryption is required to make data human readable.
+
+This is how data encryption works and how you should approach it.
+
+**Plan Text:** In the db folder almost every file name is encrypted with a `sha-256` hash but a few file names are not hashed. these files are useful for loading initial data like `meta_data.json` which contains all drops-down data.
+
+**File data decryption** Every file in the DB contains `crypted` text and some metadata which is helpful to know about which `encoding` and `algorithm` is being used. To decrypt files you also need `key` ([check symmetric key algorithm](https://en.wikipedia.org/wiki/Symmetric-key_algorithm))and [`iv`](https://en.wikipedia.org/wiki/Initialization_vector). These credentials can be obtained by contacting the maintainer in the issue or discussion section.
+
+
