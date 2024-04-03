@@ -22,7 +22,7 @@ A Blazingly fast crawler that scraps all data from the LGU timetable website.
 
 ## API Usage
 
-Developers can use scrapped data on their websites using [Github raw APIS](https://docs.github.com/en/rest/repos/contents?apiVersion=2022-11-28). Even though data is public and can be accessed easily using HTTP requests. but decryption is required to make the data human readable.
+Developers can use scrapped data on their websites using [Github raw APIS](https://docs.github.com/en/rest/repos/contents?apiVersion=2022-11-28). Even though data is public and can be accessed easily using HTTP requests but decryption is required to turn data into human readable.
 
 This is how data encryption works and how you should approach it.
 
