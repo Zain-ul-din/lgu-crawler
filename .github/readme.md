@@ -58,16 +58,21 @@ GET -> meta_data.json
 
   - create `.env` file in the root of the project.
 
-  ```.env
-  NODE_ENV="development" # recommended if running locally
+    ```.env
+      # recommended if running locally
+      NODE_ENV="development"
 
-  # Note! default keys will work replace with your own keys if needed.
-  OPEN_DB_KEY="ae3ca465683436cbfd33e2ddd4aa0fcf9fbfcfe26d29379e111a01462f87ebeb" # Must be 32 characters
-  OPEN_DB_IV="0bf4254a8293e5aedcdfcb8095c08ffa" # Must be 16 characters
+      # Note! default keys will work replace with your own keys if needed.
 
-  # get session id from LGU timetable website
-  PHPSESSID=""
-  ```
+      # Must be 32   characters
+      OPEN_DB_KEY="ae3ca465683436cbfd33e2ddd4aa0fcf9fbfcfe26d29379e111a01462f87ebeb"
+
+      # Must be 16 characters
+      OPEN_DB_IV="0bf4254a8293e5aedcdfcb8095c08ffa"
+
+      # get session id from LGU timetable website
+      PHPSESSID=""
+    ```
 
   - paste following code in .env with your values.
 
