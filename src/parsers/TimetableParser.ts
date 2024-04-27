@@ -4,7 +4,7 @@ import Parser from "./Parser";
 /**
  * Parsers timetable data from HTML content.
  */
-class TimetableParser extends Parser {
+export class TimetableParser extends Parser {
   /**
    * Parses timetable data from raw HTML content.
    * @param rawContent The raw HTML content to parse.
@@ -74,4 +74,3 @@ class TimetableParser extends Parser {
   }
 }
 
-export default TimetableParser;

@@ -1,5 +1,5 @@
 import {Encoding, createCipheriv, createDecipheriv, createHash} from "crypto";
-import {ENV} from "../constants";
+import {ENV} from "#/constants";
 import assert from "assert";
 
 // Define the cipher algorithm and the encoding for encrypted data

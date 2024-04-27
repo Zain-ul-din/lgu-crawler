@@ -1,4 +1,2 @@
-import MetaDataCrawler from "./MetaDataCrawler";
-import TimetableCrawler from "./TimetableCrawler";
-
-export {MetaDataCrawler, TimetableCrawler};
+export * from "./MetaDataCrawler";
+export * from "./TimetableCrawler";

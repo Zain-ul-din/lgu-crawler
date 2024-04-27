@@ -1,9 +1,9 @@
 import Crawler from "./Crawler";
-import Parser from "../parsers/Parser";
-import HTMLOptionsType from "../types/HTMLOptionsType";
-import MetaDataType from "../types/MetaDataType";
-import TimetableRequestPayload from "../types/TimetableRequestPayload";
-import {promisify} from "../lib/util";
+import Parser from "#/parsers/Parser";
+import HTMLOptionsType from "#/types/HTMLOptionsType";
+import MetaDataType from "#/types/MetaDataType";
+import TimetableRequestPayload from "#/types/TimetableRequestPayload";
+import {promisify} from "#/lib";
 
 interface MetaDataCrawlerParams {
   parser: Parser<HTMLOptionsType>;
@@ -22,7 +22,7 @@ export interface MetaDataCrawlerReturnType {
  * @description It's called metadata since metadata is `a set of data that describes and gives information about other data`.
  * In this case, it is describing about the timetable data.
  */
-class MetaDataCrawler extends Crawler<MetaDataCrawlerReturnType> {
+export class MetaDataCrawler extends Crawler<MetaDataCrawlerReturnType> {
   /**
    * Semesters page endpoint
    * @returns static html page
@@ -141,4 +141,3 @@ class MetaDataCrawler extends Crawler<MetaDataCrawlerReturnType> {
   }
 }
 
-export default MetaDataCrawler;

@@ -1,6 +1,6 @@
 import {writeFileSync} from "fs";
 import {DB_PATH, LOCAL_DB_PATH} from "./paths";
-import {ENV} from "../constants";
+import {ENV} from "#/constants";
 import {CIPHER_ALGO, ENCRYPTED_DATA_ENCODING, encrypt, hashStr} from "./cipher";
 import FileSchema from "./types/FileSchema";
 import {isSame} from "./util";

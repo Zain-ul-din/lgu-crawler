@@ -1,4 +1,4 @@
-import TimetableDocType from "../types/TimetableDocType";
+import TimetableDocType from "#/types/TimetableDocType";
 import pc from "picocolors";
 
 /**

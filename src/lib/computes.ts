@@ -8,8 +8,8 @@
 // of requests made to the official website.
 // **************************************************************************************************
 
-import TimetableDocType from "../types/TimetableDocType";
-import {WEEK_DAYS_NAME} from "../constants";
+import TimetableDocType from "#/types/TimetableDocType";
+import {WEEK_DAYS_NAME} from "#/constants";
 
 /**
  * Computes the list of unique teachers from the provided timetables.

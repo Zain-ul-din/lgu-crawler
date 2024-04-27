@@ -1,11 +1,11 @@
 import {load} from "cheerio";
-import HTMLOptionsType from "../types/HTMLOptionsType";
+import HTMLOptionsType from "#/types/HTMLOptionsType";
 import Parser from "./Parser";
 
 /**
  * Parses dropdown options from HTML content using Cheerio.
  */
-class OptionsParser extends Parser<HTMLOptionsType> {
+export class OptionsParser extends Parser<HTMLOptionsType> {
   /**
    * Parses dropdown options from HTML content.
    * @param html The raw HTML content to parse.
@@ -28,4 +28,3 @@ class OptionsParser extends Parser<HTMLOptionsType> {
   }
 }
 
-export default OptionsParser;

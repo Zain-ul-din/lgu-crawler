@@ -1,14 +1,14 @@
-import Parser from "../parsers/Parser";
-import TimetableDocType from "../types/TimetableDocType";
-import TimetableRequestPayload from "../types/TimetableRequestPayload";
-import TimetableType from "../types/TimetableType";
+import Parser from "#/parsers/Parser";
+import TimetableDocType from "#/types/TimetableDocType";
+import TimetableRequestPayload from "#/types/TimetableRequestPayload";
+import TimetableType from "#/types/TimetableType";
 import Crawler from "./Crawler";
 
 interface TimetableCrawlerParams {
   timetableParser: Parser<TimetableType>;
 }
 
-class TimetableCrawler extends Crawler<TimetableDocType> {
+export class TimetableCrawler extends Crawler<TimetableDocType> {
   private static readonly END_POINT = `https://timetable.lgu.edu.pk/Semesters/semester_info/SEMESTER_TIMETABLE.php`;
 
   private timetableParser: Parser<TimetableType>;
@@ -36,4 +36,3 @@ class TimetableCrawler extends Crawler<TimetableDocType> {
   }
 }
 
-export default TimetableCrawler;

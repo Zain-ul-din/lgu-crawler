@@ -1,7 +1,7 @@
-import initLocalDB from "./initDB";
-import {writeDB} from "./writeDB";
-import {readDB} from "./readDB";
+import {initLocalDB} from "./initDB";
 
 initLocalDB();
 
-export {writeDB, readDB};
+export * from "./cipher";
+export * from "./readDB";
+export * from "./writeDB";

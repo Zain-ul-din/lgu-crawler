@@ -1,7 +1,7 @@
 import {FetchOptions, ofetch} from "ofetch";
-import request_headers from "../static/request_headers.json";
+import request_headers from "#/static/request_headers.json";
 import {EventEmitter} from "stream";
-import {ENV} from "../constants";
+import {ENV} from "#/constants";
 
 type CrawlerEvents = "crawl";
 

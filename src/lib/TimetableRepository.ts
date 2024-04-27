@@ -1,16 +1,15 @@
-import {writeDB} from "../local-db";
-import {hashStr} from "../local-db/cipher";
-import MetaDataType from "../types/MetaDataType";
-import TimetableDocType from "../types/TimetableDocType";
+import {writeDB, hashStr} from "#/local-db";
+import MetaDataType from "#/types/MetaDataType";
+import TimetableDocType from "#/types/TimetableDocType";
 import {computeRoomTimetable, computeRooms, computeTeacherTimetable, computeTeachers} from "./computes";
 import {isJsonString} from "./util";
-import {WEEK_DAYS_NAME} from "../constants";
-import TimetableType from "../types/TimetableType";
+import {WEEK_DAYS_NAME} from "#/constants";
+import TimetableType from "#/types/TimetableType";
 
 /**
  * Repository for managing timetable data.
  */
-class TimetableRepository {
+export class TimetableRepository {
   /**
    * Writes metadata to the database.
    * @param metaData The metadata to write.
@@ -128,4 +127,4 @@ class TimetableRepository {
   }
 }
 
-export default TimetableRepository;
+

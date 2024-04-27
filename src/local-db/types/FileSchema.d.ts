@@ -1,4 +1,4 @@
-import {CIPHER_ALGO, ENCRYPTED_DATA_ENCODING} from "../cipher";
+import {CIPHER_ALGO, ENCRYPTED_DATA_ENCODING} from "#/cipher";
 
 /**
  * Represents the schema of a JSON file.

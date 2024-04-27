@@ -8,21 +8,20 @@
 
 import os from "os";
 import {chunkifyArray, clamp, promisify} from "./util";
-import TimetableRequestPayload from "../types/TimetableRequestPayload";
+import TimetableRequestPayload from "#/types/TimetableRequestPayload";
 import cluster from "cluster";
-import {MetaDataCrawler, TimetableCrawler} from "../crawlers";
-import TimetableParser from "../parsers/TimetableParser";
-import TimetableType from "../types/TimetableType";
-import OptionsParser from "../parsers/OptionsParser";
+import {MetaDataCrawler, TimetableCrawler} from "#/crawlers";
+import {TimetableParser, OptionsParser} from "#/parsers";
+import TimetableType from "#/types/TimetableType";
 import {EventEmitter} from "stream";
-import {MetaDataCrawlerReturnType} from "../crawlers/MetaDataCrawler";
-import TimetableDocType from "../types/TimetableDocType";
+import {MetaDataCrawlerReturnType} from "#/crawlers";
+import TimetableDocType from "#/types/TimetableDocType";
 
 /**
  * Worker class manages the process of crawling and processing timetable data using
  * a cluster of worker processes to improve performance.
  */
-class Worker {
+export class Worker {
   /** The number of available CPU cores */
   private availableCores: number;
 
@@ -150,4 +149,3 @@ class Worker {
   }
 }
 
-export default Worker;
