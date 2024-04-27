@@ -9,11 +9,19 @@ interface MetaDataCrawlerParams {
   parser: Parser<HTMLOptionsType>;
 }
 
+/**
+ * Abstract type that will return from MetadataCrawler
+ */
 export interface MetaDataCrawlerReturnType {
   metaData: MetaDataType;
   timeTableRequestPayloads: TimetableRequestPayload[];
 }
 
+/**
+ * MetaDataCrawler responsible for scrapping drop downs data from the targeted website.
+ * @description It's called metadata since metadata is `a set of data that describes and gives information about other data`.
+ * In this case, it is describing about the timetable data.
+ */
 class MetaDataCrawler extends Crawler<MetaDataCrawlerReturnType> {
   /**
    * Semesters page endpoint

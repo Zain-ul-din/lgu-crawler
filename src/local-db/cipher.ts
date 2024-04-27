@@ -2,14 +2,21 @@ import {Encoding, createCipheriv, createDecipheriv, createHash} from "crypto";
 import {ENV} from "../constants";
 import assert from "assert";
 
+// Define the cipher algorithm and the encoding for encrypted data
 export const CIPHER_ALGO = "aes-256-cbc";
 export const ENCRYPTED_DATA_ENCODING: Encoding = "hex";
 
+// Retrieves encryption credentials (key and IV)
 const getCredentials = () => ({
   key: Buffer.from(ENV.OPEN_DB_KEY || "", "hex"),
   iv: Buffer.from(ENV.OPEN_DB_IV || "", "hex"),
 });
 
+/**
+ * Encrypts data using AES-256-CBC algorithm.
+ * @param data The data to encrypt.
+ * @returns The encrypted data.
+ */
 export function encrypt(data: string) {
   const {key, iv} = getCredentials();
   const cipher = createCipheriv(CIPHER_ALGO, key, iv);
@@ -19,6 +26,11 @@ export function encrypt(data: string) {
   return crypted;
 }
 
+/**
+ * Decrypts data using AES-256-CBC algorithm.
+ * @param data The encrypted data to decrypt.
+ * @returns The decrypted data.
+ */
 export function decrypt(data: string) {
   const {key, iv} = getCredentials();
   const decipher = createDecipheriv(CIPHER_ALGO, key, iv);
@@ -27,6 +39,11 @@ export function decrypt(data: string) {
   return decrypted;
 }
 
+/**
+ * Calculates the SHA-256 hash of a string.
+ * @param str The string to hash.
+ * @returns The SHA-256 hash of the string.
+ */
 export function hashStr(str: string) {
   return createHash("sha256").update(str).digest("hex");
 }

@@ -5,17 +5,27 @@ import {logOnCrawlTimetable} from "./lib/logger";
 
 new Worker()
 
-.onCrawlMetaData(({metaData, timeTableRequestPayloads}) => {
-  if (timeTableRequestPayloads.length == 0) throw ERRORS.INVALID_COOKIE;
-  TimetableRepository.writeMetaData(metaData);
-})
+  /* 
+  Callback invoked when metadata is available 
+*/
+  .onCrawlMetaData(({metaData, timeTableRequestPayloads}) => {
+    if (timeTableRequestPayloads.length == 0) throw ERRORS.INVALID_COOKIE;
+    TimetableRepository.writeMetaData(metaData);
+  })
 
-.onCrawlTimetable(logOnCrawlTimetable)
+  /* 
+  Callback invoked when timetable is crawled
+*/
+  .onCrawlTimetable(logOnCrawlTimetable)
 
-.onFinish((allTimetables) =>
-  TimetableRepository.writeTimetables(allTimetables)
-  .writeTeachersTimetable(allTimetables)
-  .writeRoomsTimetable(allTimetables)
-)
+  /* 
+  Callback invoked when all timetables are crawled
+*/
+  .onFinish((allTimetables) =>
+    TimetableRepository.writeTimetables(allTimetables)
+      .writeTeachersTimetable(allTimetables)
+      .writeRoomsTimetable(allTimetables)
+  )
 
-.start();
+  // start the worker 🔥
+  .start();

@@ -36,9 +36,48 @@ This is how data encryption works and how you should approach it.
 
 ```md
 GET -> meta_data.json
-     |
-     | --> Generate hash from user input ('<semester> <program> <section>'.replaceAll('/', ''))
-         |
-         | --> GET base_url/generated_hash.json => timetable
+|
+| --> Generate hash from user input ('<semester> <program> <section>'.replaceAll('/', ''))
+|
+| --> GET base_url/generated_hash.json => timetable
 ```
 
+## Usage
+
+- **Download Source Code**
+
+  ```bash
+  git clone <this_repo>
+  ```
+
+  > OR
+
+  [**Download**](https://github.com/Zain-ul-din/lgu-crawler/archive/refs/heads/master.zip)
+
+- **Prepare Environment Variables**
+
+  - create `.env` file in the root of the project.
+
+  ```.env
+  NODE_ENV="development" # recommended if running locally
+
+  # Note! default keys will work replace with your own keys if needed.
+  OPEN_DB_KEY="ae3ca465683436cbfd33e2ddd4aa0fcf9fbfcfe26d29379e111a01462f87ebeb" # Must be 32 characters
+  OPEN_DB_IV="0bf4254a8293e5aedcdfcb8095c08ffa" # Must be 16 characters
+
+  # get session id from LGU timetable website
+  PHPSESSID=""
+  ```
+
+  - paste following code in .env with your values.
+
+  **Appendix:**
+
+  - [How to Get Session ID?](https://github.com/IIvexII/LGU-TimetableAPI/blob/main/docs/How_to_get_session.md)
+  - To generate key and iv run `openssl rand -hex <size 32 | 16>`
+
+- **Run**
+  ```bash
+    npx yarn
+    npx yarn dev
+  ```

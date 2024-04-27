@@ -1,7 +1,16 @@
 import {load, Element, CheerioAPI} from "cheerio/lib/slim";
 import Parser from "./Parser";
 
+/**
+ * Parsers timetable data from HTML content.
+ */
 class TimetableParser extends Parser {
+  /**
+   * Parses timetable data from raw HTML content.
+   * @param rawContent The raw HTML content to parse.
+   * @param selector The CSS selector to locate timetable rows.
+   * @returns Parsed timetable data.
+   */
   public parse(rawContent: string, selector: string = "tr") {
     const $ = load(rawContent);
     const rows = $("tr").toArray().slice(1);
@@ -15,6 +24,12 @@ class TimetableParser extends Parser {
     return timetable;
   }
 
+  /**
+   * Parses a single timetable row.
+   * @param $ The Cheerio instance.
+   * @param row The row element to parse.
+   * @returns Parsed timetable data for the row.
+   */
   private parseRow($: CheerioAPI, row: Element) {
     const weekName = $(row).find("th").text();
     const tdNodes = $(row).find("td").toArray();
@@ -36,6 +51,11 @@ class TimetableParser extends Parser {
     return {[weekName]: lectures};
   }
 
+  /**
+   * Parses text nodes containing lecture data.
+   * @param nodes An array of text nodes representing lecture data.
+   * @returns Parsed lecture data.
+   */
   private parseTextNodes(nodes: string[]) {
     const time = nodes[4].split("-");
     return {

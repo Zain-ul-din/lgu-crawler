@@ -8,6 +8,9 @@ import DBUpdateStatus from "./types/DBUpadateStatus";
 import DBWriteOptions from "./types/DBWriteOptions";
 import pc from "picocolors";
 
+/**
+ * Default options for writing to the database
+ */
 const DEFAULT_OPTIONS: DBWriteOptions<any> = {
   hash: true,
   compare(curr, previous) {
@@ -15,17 +18,37 @@ const DEFAULT_OPTIONS: DBWriteOptions<any> = {
   },
 };
 
+/**
+ * Writes data to the database with the given UID.
+ * @param uid The unique identifier of the data.
+ * @param content The data to write to the database.
+ * @param options The options for writing to the database.
+ * @returns The status of the database update operation.
+ */
 export function writeDB<T = any>(uid: string, content: T, options: DBWriteOptions<T> = DEFAULT_OPTIONS) {
   const _options = {...DEFAULT_OPTIONS, ...options};
   writeDBLocal(uid, content);
   return writeDBPublic<T>(uid, content, _options);
 }
 
+/**
+ * Writes data to the local database directory only in development.
+ * @param uid The unique identifier of the data.
+ * @param content The data to write to the local database.
+ */
 function writeDBLocal(uid: string, content: any) {
   if (ENV.NODE_ENV !== "development") return;
   writeFileSync(`${LOCAL_DB_PATH}/${uid}.json`, JSON.stringify(content, null, 2), "utf-8");
 }
 
+/**
+ * Writes encrypted data to the public database directory.
+ * @param uid The unique identifier of the data.
+ * @param content The data to write to the public database.
+ * @param hash Indicates whether to hash the UID.
+ * @param compare A custom comparison function to determine if the content has changed.
+ * @returns The status of the database update operation.
+ */
 function writeDBPublic<T>(uid: string, content: T, {hash, compare}: DBWriteOptions<T>): DBUpdateStatus<T> {
   const crypted = encrypt(JSON.stringify(content));
 

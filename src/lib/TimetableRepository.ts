@@ -7,11 +7,22 @@ import {isJsonString} from "./util";
 import {WEEK_DAYS_NAME} from "../constants";
 import TimetableType from "../types/TimetableType";
 
+/**
+ * Repository for managing timetable data.
+ */
 class TimetableRepository {
+  /**
+   * Writes metadata to the database.
+   * @param metaData The metadata to write.
+   */
   public static writeMetaData(metaData: MetaDataType) {
     writeDB("meta_data", metaData, {hash: false});
   }
 
+  /**
+   * Writes timetables to the database.
+   * @param timetables The timetables to write.
+   */
   public static writeTimetables(timetables: TimetableDocType[]) {
     writeDB("all_timetables", timetables, {hash: false});
     writeDB("timetable_paths", timetables.map((t) => t.uid).map(hashStr), {hash: false});
@@ -31,6 +42,10 @@ class TimetableRepository {
     return this;
   }
 
+  /**
+   * Writes teachers' timetables to the database.
+   * @param timetables The timetables to write.
+   */
   public static writeTeachersTimetable(timetables: TimetableDocType[]) {
     const teachers = computeTeachers(timetables);
     writeDB("teachers", teachers, {hash: false});
@@ -51,6 +66,10 @@ class TimetableRepository {
     return this;
   }
 
+  /**
+   * Writes rooms' timetables to the database.
+   * @param timetables The timetables to write.
+   */
   public static writeRoomsTimetable(timetables: TimetableDocType[]) {
     const rooms = computeRooms(timetables);
     writeDB("rooms", rooms, {hash: false});
@@ -71,6 +90,12 @@ class TimetableRepository {
     return this;
   }
 
+  /**
+   * Compares the current timetable with the content stored in the database.
+   * @param curr The current timetable.
+   * @param dbContent The content stored in the database as a string.
+   * @returns true if the current timetable is different from the content in the database, false otherwise.
+   */
   private static compareDBTimetable(curr: TimetableDocType, dbContent: string) {
     if (!isJsonString(dbContent)) return false;
     const timetable = JSON.parse(dbContent) as any;
