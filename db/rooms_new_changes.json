@@ -1,6 +1,6 @@
 {
-  "updated_at": "2025-03-20T06:48:27.061Z",
+  "updated_at": "2025-03-25T09:45:25.351Z",
   "algo": "aes-256-cbc",
   "encoding": "hex",
-  "crypted": "96b3ac68054c223fbef670d6eba1dec5dd482407e38523d493d829a0b84b5b6d718d654d4265d7116aa5d8ac6086da8b2ab447dbffe881f6f8c597b9d47d82ccc7509af8b77c26baf6488c1b0dcada91"
+  "crypted": "9ff430ef40a75543855d9bd63b34bc48"
 }
